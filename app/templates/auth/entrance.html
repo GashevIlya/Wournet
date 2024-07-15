@@ -1,0 +1,42 @@
+{% extends "auth/base.html" %}
+{% block title %} Вход {% endblock %}
+{% block header %} Добро пожаловать в Wournet! {% endblock %}
+{% block description %} Лучший сайт вопрос-ответ, где пользователи могут обмениваться своими знаниями. Чтобы войти в систему, пожалуйста, введите свои учетные данные в предусмотренные поля. Благодарим за ваше доверие и с нетерпением ждем ваших вопросов! {% endblock %}
+{% block form %}
+     <form method="post">
+         {{ form_entrance.hidden_tag() }}
+         <p class="header-form">Вход в систему</p>
+         {% for msg in get_flashed_messages() %}
+            <p><div class="alert alert-danger alert-dismissible fade show">
+                 {{ msg }}
+                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div></p>
+        {% endfor %}
+        <p><div class="input-group">
+            <div class="input-group-text text-white bg-primary">@</div>
+            {{ form_entrance.gmail(class="form-control", placeholder="Gmail") }}
+        </div>
+        </p>
+        <p><div class="input-group">
+            <div class="input-group-text text-white bg-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
+                </svg>
+            </div>
+            {{ form_entrance.password(class="form-control", placeholder="Пароль") }}
+        </div>
+        </p>
+        <p>
+            <div class="form-check">
+              {{ form_entrance.remember(class="form-check-input", value="", id="remember") }}
+              <label class="form-check-label" for="remember">
+                {{ form_entrance.remember.label }}
+              </label>
+            </div>
+        </p>
+        <p>{{ form_entrance.submit(class="btn bg-primary text-white w-100") }}</p>
+    </form>
+    <p class="change-password"><a href="{{ url_for('auth.reset_password') }}">Забыли пароль?</a></p>
+{% endblock %}
+
+

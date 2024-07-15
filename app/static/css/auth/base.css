@@ -1,0 +1,99 @@
+.items {
+    padding-left: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+body {
+    background-image: url("https://images.thevoicemag.ru/upload/img_cache/0ab/0abf2829b70bd673fc8a6f336e30541f_ce_1280x853x0x0.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+.form {
+    padding-right: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+.form form, p.change-password {
+    width: 75%;
+    margin: auto;
+}
+.form .header-form {
+    text-align: center;
+    font-size: 25px;
+    color: black;
+    font-weight: 600;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+p.change-password a {
+    text-decoration: none;
+    font-family: 'Courier New', Courier, monospace;
+}
+p.change-password a:hover {
+    color: red;
+}
+p.change-password {
+    text-align: center;
+}
+.form p button {
+    border-radius: 5px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 600;
+}
+.form p button:hover {
+    box-shadow: 5px 5px 5px grey;
+}
+.form p input {
+    border-radius: 5px;
+}
+.items div {
+    text-align: center;
+}
+.items div .header-items {
+    text-align: center;
+    font-size: 25px;
+    color: white;
+    font-weight: 600;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.items div p {
+    color: white;
+    font-size: 17px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 600;
+}
+p.privacy-policy {
+    font-size: 14px;
+}
+@media screen and (max-width: 767px) {
+    .items {
+        padding: 30px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        border-bottom-left-radius: 0;
+    }
+    .form {
+        padding: 30px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        border-top-right-radius: 0px;
+    }
+}
+@media screen and (max-width: 575px) {
+    .main-form.col-12 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .items, .form {
+        border-radius: 0;
+    }
+}
+@media screen and (max-width: 500px) {
+    .form form {
+        width: 100%;
+    }
+}

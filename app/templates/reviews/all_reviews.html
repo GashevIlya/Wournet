@@ -1,0 +1,68 @@
+{% extends "base_content.html" %}
+{% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews/all_reviews.css') }}"> {% endblock %}
+{% block title %} Все отзывы {% endblock %}
+{% block header %} Все отзывы {% endblock %}
+{% block section %}
+     {% if reviews_users.items != [] %}
+         {% for review in reviews_users %}
+             <div class="col-12 shadow p-3 section">
+                 <div class="row">
+                     <div class="col-auto avatar">
+                         <img src="{{ avatars.gravatar(review.account.user.hash_gmail()) }}">
+                     </div>
+                     <div class="col">
+                         <div class="row">
+                             <div class="col-12">
+                                 <div class="row">
+                                     <div class="col-auto">
+                                         <span class="subject">Никнейм:</span>
+                                     </div>
+                                     <div class="col-auto">
+                                          <a href="{{ url_for('account.account_user', nickname=review.account.nickname) }}">{{ review.account.nickname }}</a>
+                                     </div>
+                                     <div class="col-auto">
+                                         <span class="subject">Дата создания:</span>
+                                     </div>
+                                     <div class="col-auto">
+                                          <span>{{ review.format_create_time() }}</span>
+                                     </div>
+                                 </div>
+                             </div>
+                             <div class="col-12 text">
+                                 <div id="collapse-{{ review.id }}">{{ review.text }}</div>
+                             </div>
+                             {% if review.text|length > 300 %}
+                                 <div class="col-12">
+                                     <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover expand-text" data-collapse-id="{{ review.id }}">Развернуть</a>
+                                 </div>
+                             {% endif %}
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         {% endfor %}
+         <div class="col-12">
+            <nav>
+              <ul class="pagination justify-content-center">
+                <li class="page-item {% if not reviews_users.has_prev %} disabled {% endif %}">
+                  <a class="page-link" href="{{ url_for('reviews.all_reviews', page=reviews_users.prev_num) }}">Предыдущий</a>
+                </li>
+                {% for page in reviews_users.iter_pages() %}
+                    <li class="page-item {% if reviews_users.page == page %} active {% endif %}"><a class="page-link" {% if page != None %} href="{{ url_for('reviews.all_reviews', page=page) }}" {% endif %}>{% if page != None %} {{ page }} {% else %} ... {% endif %}</a></li>
+                {% endfor %}
+                <li class="page-item {% if not reviews_users.has_next %} disabled {% endif %}">
+                  <a class="page-link" href="{{ url_for('reviews.all_reviews', page=reviews_users.next_num) }}">Следующий</a>
+                </li>
+              </ul>
+            </nav>
+         </div>
+     {% else %}
+         <div class="col-12 shadow p-3 text-center section">
+             <h6>Отзывов нет</h6>
+         </div>
+     {% endif %}
+{% endblock %}
+{% block script %}
+    <script src="{{ url_for('static', filename='js/reviews.js') }}"></script>
+{% endblock %}
+

@@ -1,0 +1,12 @@
+.accordion-body div.col-12 {
+    margin-top: 15px;
+}
+.accordion-body div.col-12 input[type="text"], .accordion-body div.col-12 input[type="email"],
+.accordion-body div.col-12 textarea {
+    background-color: white;
+    font-family: "Josefin Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.accordion-body div.col-12 span {
+    font-weight: bolder;
+}
+

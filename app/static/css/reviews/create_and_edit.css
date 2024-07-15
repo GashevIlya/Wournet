@@ -1,0 +1,8 @@
+.section form p {
+    margin-top: 15px;
+}
+.section form p label {
+    font-size: 18px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block link_style %} {% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="bg-light">
+     <header class="container-fluid bg-dark">
+        <nav class="navbar navbar-expand-sm">
+            <div class="container-fluid row m-auto">
+                {% if current_user.is_authenticated %}
+                    <div class="col-auto">
+                        <button class="icon-menu btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-menu">
+                            <img src="{{ url_for('static', filename='images/base/menu.png') }}">
+                        </button>
+                        <div class="offcanvas offcanvas-start bg-dark" data-bs-scroll="true" tabindex="-1" id="offcanvas-menu">
+                            <div class="offcanvas-header">
+                                <h4 class="offcanvas-title text-white">Все сервисы</h4>
+                                <button type="button" class="btn-close bg-white" data-bs-dismiss="offcanvas"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <div class="row">
+                                    <div class="item col-12" onclick="document.location.href='{{ url_for('reviews.all_reviews') }}'">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <img src="{{ url_for('static', filename='images/base/reviews.png') }}">
+                                            </div>
+                                            <div class="col">
+                                                <span>Отзывы</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item col-12" onclick="document.location.href='{{ url_for('users.all_users') }}'">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <img src="{{ url_for('static', filename='images/base/users.png') }}">
+                                            </div>
+                                            <div class="col">
+                                                <span>Пользователи</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item col-12">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <img src="{{ url_for('static', filename='images/base/questions.png') }}">
+                                            </div>
+                                            <div class="col">
+                                                <span>Вопросы</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="col-auto">
+                    <a class="navbar-brand text-white" href="#">Wournet</a>
+                </div>
+                {% if current_user.is_authenticated %}
+                     <div class="col d-sm-none text-end">
+                        <a class="icon-search navbar-toggler" data-bs-toggle="collapse" data-bs-target="#search" aria-controls="search" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='images/base/search (1).png') }}">
+                        </a>
+                    </div>
+                    <div class="search col-md col-sm col-xs-12 order-sm-1 order-3">
+                        <div class="collapse navbar-collapse" id="search">
+                            <div class="input-group">
+                                <input class="form-control form-control-sm" placeholder="Поиск" type="text">
+                                <div class="input-group-text">
+                                    <button class="btn btn-sm">
+                                        <img src="{{ url_for('static', filename='images/base/search.png') }}">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto order-sm-2 order-1">
+                        <div class="dropdown">
+                            <button class="create btn bg-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Создать">
+                                <img src="{{ url_for('static', filename='images/base/add_question_or_review.png') }}">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end bg-dark">
+                              <li><a class="dropdown-item" href="{{ url_for('questions.create') }}">Вопрос</a></li>
+                              <li><a class="dropdown-item" href="{{ url_for('reviews.create') }}">Отзыв</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col text-end">
+                       <button class="entrance btn bg-primary text-white" onclick="document.location.href='{{ url_for('auth.entrance') }}'">Вход</button>
+                    </div>
+                    <div class="col-auto">
+                        <button class="registration btn bg-success text-white" onclick="document.location.href='{{ url_for('auth.registration') }}'">Регистрация</button>
+                    </div>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    <div class="col-auto order-sm-3 order-2">
+                        <a href="{{ url_for('account.account_user', nickname=current_user.account.nickname) }}" class="account"><img src="{{ url_for('static', filename='images/base/account.png') }}"></a>
+                    </div>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    <article class="container-fluid">
+        <div class="content">
+            <div class="container-fluid row m-auto">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </article>
+     {% block script %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
+

@@ -1,0 +1,20 @@
+.section div.col-12 span {
+    font-size: 20px;
+    font-family: "Lora", Georgia, "Times New Roman", Times, serif;
+}
+.section div.col-12 {
+    margin-bottom: 15px;
+}
+.section div.col-12 label {
+    font-size: 16px;
+    font-family: "Neucha", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin-bottom: -5px;
+    font-weight: bolder;
+}
+.section div.col-12 label.form-check-label {
+    font-weight: normal;
+}
+.data-section {
+    border-bottom: 1px solid #dedede;
+}
+

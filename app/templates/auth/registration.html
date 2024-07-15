@@ -1,0 +1,63 @@
+{% extends "auth/base.html" %}
+{% block title %} Регистрация {% endblock %}
+{% block header %} Привет, друг! {% endblock %}
+{% block description %} Создайте аккаунт, чтобы вы могли насладиться всеми преимуществами нашего сервиса. Просто заполните несколько обязательных полей и вперед, к новым знаниям! Доверьтесь нам, и мы поможем вам сделать ваше пребывание здесь незабываемым. {% endblock %}
+{% block form %}
+     <form method="post">
+        {{ form_registration.hidden_tag() }}
+        <p class="header-form">Регистрация</p>
+        {% for msg in get_flashed_messages() %}
+            <p><div class="alert alert-danger alert-dismissible fade show">
+                 {{ msg }}
+                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div></p>
+        {% endfor %}
+        {% for field, errors in form_registration.errors.items() %}
+             <p><div class="alert alert-danger alert-dismissible fade show">
+                 {% if field == 'recaptcha' %}
+                     Неверно выполнена recaptcha
+                 {% else %}
+                     {{ ', '.join(errors) }}
+                 {% endif %}
+                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+             </div></p>
+       {% endfor %}
+        <p><div class="input-group">
+            <div class="input-group-text text-white bg-primary">@</div>
+            {{ form_registration.gmail(class="form-control", placeholder="Gmail") }}
+        </div>
+        </p>
+        <p>
+            <div class="input-group">
+            <div class="input-group-text text-white bg-primary">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                 </svg>
+            </div>
+            {{ form_registration.nickname(class="form-control", placeholder="Никнейм") }}
+        </div>
+        </p>
+        <p><div class="input-group">
+            <div class="input-group-text text-white bg-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
+                </svg>
+            </div>
+            {{ form_registration.password(class="form-control", placeholder="Пароль") }}
+        </div>
+        </p>
+        <p><div class="input-group">
+            <div class="input-group-text text-white bg-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
+                </svg>
+            </div>
+            {{ form_registration.repeat_password(class="form-control", placeholder="Повторить пароль") }}
+        </div>
+        </p>
+       <p>{{ form_registration.recaptcha() }}</p>
+        <p class="privacy-policy">Нажимая "Зарегистрироваться" вы соглашаетесь с <a href="#">политикой конфиденциальности</a></p>
+        <p>{{ form_registration.submit(class="btn bg-primary text-white w-100") }}</p>
+    </form>
+{% endblock %}
+

@@ -1,0 +1,51 @@
+{% extends "base_content.html" %}
+{% block title %} Все пользователи {% endblock %}
+{% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/users/all_users.css') }}"> {% endblock %}
+{% block header %} Все пользователи {% endblock %}
+{% block section %}
+    <div class="col-12 section">
+       <div class="row">
+           {% for user in users %}
+               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                   <div class="card">
+                       <div class="card-header">
+                           <img src="{{ avatars.gravatar(user.user.hash_gmail()) }}">
+                       </div>
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col-12">
+                                  <div class="card-title"><h4>{{ user.nickname }}</h4></div>
+                              </div>
+                              <div class="col-12 card-text">
+                                  <p><span>Вопросов:</span> <span class="text-primary">{{ user.count_questions() }}</span></p>
+                                  <p><span>Отзывов:</span> <span class="text-primary">{{ user.count_reviews() }}</span></p>
+                                  <p><span>Очков:</span> <span class="text-primary">{{ user.count_score() }}</span></p>
+                              </div>
+                              <div class="col-12">
+                                  <button class="btn btn-sm btn-secondary" onclick="document.location.href='{{ url_for('account.account_user', nickname=user.nickname) }}'">
+                                      Перейти в аккаунт</button>
+                              </div>
+                          </div>
+                      </div>
+                   </div>
+               </div>
+           {% endfor %}
+       </div>
+    </div>
+    <div class="col-12">
+        <nav>
+          <ul class="pagination justify-content-center">
+            <li class="page-item {% if not users.has_prev %} disabled {% endif %}">
+              <a class="page-link" href="{{ url_for('users.all_users', page=users.prev_num) }}">Предыдущий</a>
+            </li>
+            {% for page in users.iter_pages() %}
+                <li class="page-item {% if users.page == page %} active {% endif %}"><a class="page-link" {% if page != None %} href="{{ url_for('users.all_users', page=page) }}" {% endif %}>{% if page != None %} {{ page }} {% else %} ... {% endif %}</a></li>
+            {% endfor %}
+            <li class="page-item {% if not users.has_next %} disabled {% endif %}">
+              <a class="page-link" href="{{ url_for('users.all_users', page=users.next_num) }}">Следующий</a>
+            </li>
+          </ul>
+        </nav>
+    </div>
+{% endblock %}
+

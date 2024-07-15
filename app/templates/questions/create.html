@@ -1,0 +1,44 @@
+{% extends "base_content.html" %}
+{% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews/create_and_edit.css') }}"> {% endblock %}
+{% block title %} Создать вопрос {% endblock %}
+{% block header %} Создать вопрос {% endblock %}
+{% block section %}
+       <div class="col-12 section">
+            <form method="post">
+                {% for field, errors in form_create_question.errors.items() %}
+                 <p><div class="alert alert-danger alert-dismissible fade show">
+                     {% if field == 'recaptcha' %}
+                         Неверно выполнена recaptcha
+                     {% else %}
+                         {{ ', '.join(errors) }}
+                     {% endif %}
+                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                 </div></p>
+                {% endfor %}
+                {% for cat, msg in get_flashed_messages(True) %}
+                    <p><div class="alert alert-{{ cat }} alert-dismissible fade show">
+                         {{ msg }}
+                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div></p>
+                {% endfor %}
+                {{ form_create_question.hidden_tag() }}
+                <p>{{ form_create_question.header.label }}</p>
+                <p>{{ form_create_question.header(class="form-control") }}</p>
+                <p>{{ form_create_question.description.label }}</p>
+                <p><span>Длина описания должна быть от 5 до 3000 символов</span></p>
+                <p>{{ form_create_question.description() }}</p>
+                <p>{{ form_create_question.complexity.label }}</p>
+                <p>{{ form_create_question.complexity() }}</p>
+                <p>{{ form_create_question.categories.label }}</p>
+                <p>{{ form_create_question.categories() }}</p>
+                <p>{{ form_create_question.is_draft.label }}</p>
+                <p>{{ form_create_question.is_draft() }}</p>
+                <p>{{ form_create_question.recaptcha() }}</p>
+                <p>{{ form_create_question.submit(class="btn bg-primary text-white") }}</p>
+            </form>
+       </div>
+{% endblock %}
+{% block script %}
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='description') }}
+{% endblock %}

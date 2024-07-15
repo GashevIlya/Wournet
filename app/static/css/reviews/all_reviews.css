@@ -1,0 +1,32 @@
+.section div.avatar img {
+    width: 60px;
+    height: 60px;
+}
+.section div.text div {
+    font-size: 16px;
+    font-family: "Neucha", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: normal;
+    max-height: 150px;
+    overflow: hidden;
+    word-break: break-word;
+}
+.section div.col-auto span.subject {
+    font-size: 18px;
+    font-family: "Lora", Georgia, "Times New Roman", Times, serif;
+    font-weight: bolder;
+}
+.section div.col-auto span {
+    font-size: 16px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.expand-text {
+    cursor: pointer;
+    font-size: 15px;
+}
+.section div.col-auto a {
+    font-size: 18px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bolder;
+    text-decoration: none;
+}
+

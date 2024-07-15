@@ -1,0 +1,103 @@
+header.container-fluid, article.container-fluid {
+    padding-left: 10%;
+    padding-right: 10%;
+}
+a.account img {
+    width: 40px;
+}
+button.create img, button.menu-items img {
+    width: 20px;
+    margin-top: -3px;
+}
+div.offcanvas-body span {
+    color: white;
+    font-size: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    text-decoration: none;
+}
+div.offcanvas-body div.item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+div.offcanvas-body div.item:hover {
+    background-color: grey;
+}
+.dropdown-menu.bg-dark .dropdown-item {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    color: white;
+    font-size: 18px;
+}
+.dropdown-menu.bg-dark .dropdown-item:hover {
+    background-color: rgb(88, 88, 88);
+}
+a.icon-search {
+    cursor: pointer;
+}
+button.icon-menu img {
+    margin-top: -3px;
+}
+article.container-fluid {
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+@media screen and (width >= 1200px) {
+    header.container-fluid nav, article.container-fluid div.content {
+        width: 1100px;
+        margin: auto;
+    }
+    header.container-fluid, article.container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+@media screen and (max-width: 991px) {
+    header.container-fluid, article.container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .navbar .container-fluid.row, .content .container-fluid.row {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+@media screen and (max-width: 575px) {
+    div.input-group {
+        margin-top: 15px;
+    }
+}
+@media screen and (max-width: 430px) {
+    a.account img {
+        width: 25px;
+    }
+    a.icon-search img {
+        width: 20px;
+    }
+    a.icon-search {
+        margin-right: -20px;
+    }
+    button.create, button.icon-menu, button.menu-items img {
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-right: -10px;
+    }
+    button.create img, button.menu-items img {
+        width: 15px;
+    }
+    a.navbar-brand {
+        font-size: 17px;
+    }
+    button.entrance, button.registration {
+        font-size: small;
+    }
+    button.entrance {
+        margin-right: -15px;
+    }
+    button.icon-menu img {
+        width: 16px;
+    }
+}

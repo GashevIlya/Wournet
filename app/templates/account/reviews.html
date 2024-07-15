@@ -1,0 +1,51 @@
+{% if reviews_user.items != [] %}
+    {% for review in reviews_user %}
+        <div class="col-12 review" id="review{{ review.id }}" {% if reviews_user.has_next %}
+             hx-get="{{ url_for('account.reviews', nickname=user.nickname, page=reviews_user.next_num) }}"
+             hx-trigger="revealed"
+             hx-swap="afterend" {% endif %}>
+            <div class="row">
+                <div class="col-auto">
+                    <img src="{{ avatars.gravatar(user.user.hash_gmail()) }}">
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-auto create-time">
+                                    <span>{{ review.format_create_time() }}</span>
+                                </div>
+                                {% if user.id == current_user.id %}
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="document.location.href='{{ url_for('reviews.edit', id_review=review.id) }}'">Редактировать</button>
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" hx-delete="{{ url_for('reviews.delete_review', id_review=review.id) }}" hx-target="#review{{ review.id }} "  hx-swap="outerHTML" hx-confirm="Вы точно хотите удалить отзыв">Удалить</button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                         <div class="col-12 text">
+                             <div id="collapse-{{ review.id }}">{{ review.text }}</div>
+                         </div>
+                         {% if review.text|length > 300 %}
+                             <div class="col-12">
+                                 <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover expand-text" data-collapse-id="{{ review.id }}">Развернуть</a>
+                             </div>
+                         {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="col-12 text-center">
+       <h6>
+           {% if user.id == current_user.id %}
+               У вас нет отзывов
+           {% else %}
+               У пользователя нет отзывов
+           {% endif %}
+       </h6>
+    </div>
+{% endif %}

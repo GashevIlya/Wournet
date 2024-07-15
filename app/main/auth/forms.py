@@ -1,0 +1,52 @@
+from flask_wtf import FlaskForm, RecaptchaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError, EmailField
+from wtforms.validators import DataRequired, Length, EqualTo
+from app.manage import db
+from app.main.models import Account, User
+
+
+def validate_gmail(form, gmail):
+    user = db.session.query(User).filter_by(gmail=gmail.data).first()
+    if user:
+        raise ValidationError(message='Такой Gmail есть')
+    if gmail.data[-10:] != '@gmail.com':
+        raise ValidationError(message='Gmail неверно введен')
+
+
+def validate_nickname(form, nickname):
+    user = db.session.query(Account).filter_by(nickname=nickname.data).first()
+    if user:
+        raise ValidationError(message='Такой никнейм есть')
+
+
+class EntranceForm(FlaskForm):
+    gmail = EmailField(label='Gmail', validators=[DataRequired(), Length(max=100)])
+    password = PasswordField(label='Пароль', validators=[DataRequired(), Length(max=100)])
+    remember = BooleanField(label='Запомнить меня')
+    submit = SubmitField(label='Войти')
+
+
+class RegistrationForm(FlaskForm):
+    gmail = EmailField(label='Gmail', validators=[DataRequired(), Length(min=6, max=100), validate_gmail])
+    nickname = StringField(label='Никнейм', validators=[DataRequired(), Length(min=3, max=15), validate_nickname])
+    password = PasswordField(label='Пароль', validators=[DataRequired(), Length(min=8, max=100)])
+    repeat_password = PasswordField(label='Повторить пароль', validators=[DataRequired(),
+                                                                          EqualTo(fieldname='password',
+                                                                                  message='Неверно повторен пароль')])
+    recaptcha = RecaptchaField()
+    submit = SubmitField(label='Зарегистрироваться')
+
+
+class ResetPasswordForm(FlaskForm):
+    gmail = EmailField(label='Gmail', validators=[DataRequired(), Length(max=100)])
+    recaptcha = RecaptchaField()
+    submit = SubmitField(label='Отправить')
+
+
+class ChangePasswordForm(FlaskForm):
+    password = PasswordField(label='Новый пароль', validators=[DataRequired(), Length(min=8, max=100)])
+    repeat_password = PasswordField(label='Повторить новый пароль', validators=[DataRequired(),
+                                                                                EqualTo(fieldname='password',
+                                                                                        message='Неверно повторен пароль')])
+    submit = SubmitField(label='Сохранить')
+

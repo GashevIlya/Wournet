@@ -1,0 +1,149 @@
+{% extends "base_content.html" %}
+{% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/account/edit.css') }}"> {% endblock %}
+{% block title %} Редактировать аккаунт {% endblock %}
+{% block header %} Редактировать аккаунт {% endblock %}
+{% block section %}
+    <div class="col-12 section">
+        <form method="post">
+            {{ form_edit_account.hidden_tag() }}
+            <div class="row">
+                 <div class="col-12">
+                      {% for cat, msg in get_flashed_messages(True) %}
+                          <p><div class="alert alert-{{ cat }} alert-dismissible fade show">
+                             {{ msg }}
+                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                          </div></p>
+                      {% endfor %}
+                      {% for error in form_edit_account.nickname.errors %}
+                         <p><div class="alert alert-danger alert-dismissible fade show">
+                             {{ ', '.join(error) }}
+                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                         </div></p>
+                      {% endfor %}
+                 </div>
+                <div class="col-12 data-section">
+                    <div class="row">
+                        <div class="col-12">
+                            <span>Персональные данные</span>
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.nickname.label }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.nickname(class="form-control", value=current_user.account.nickname) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 data-section">
+                    <div class="row">
+                        <div class="col-12">
+                            <span>Общие</span>
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.surname.label }}
+                        </div>
+                        <div class="col-12">
+                            {% if current_user.account.surname %}
+                                {{ form_edit_account.surname(class="form-control", value=current_user.account.surname) }}
+                            {% else %}
+                                {{ form_edit_account.surname(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.name.label }}
+                        </div>
+                        <div class="col-12">
+                            {% if current_user.account.name %}
+                                {{ form_edit_account.name(class="form-control", value=current_user.account.name) }}
+                            {% else %}
+                                {{ form_edit_account.name(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.date_of_birth.label }}
+                        </div>
+                        <div class="col-12">
+                            {% if current_user.account.date_of_birth %}
+                                {{ form_edit_account.date_of_birth(class="form-control", value=current_user.account.date_of_birth) }}
+                            {% else %}
+                                {{ form_edit_account.date_of_birth(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.gender.label }}
+                        </div>
+                        <div class="col-12">
+                            {% for gender in form_edit_account.gender %}
+                                <div class="form-check form-check-inline">
+                                    {{ gender(class="form-check-input") }}
+                                    {{ gender.label(class="form-check-label") }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 data-section">
+                    <div class="row">
+                        <div class="col-12">
+                            <span>Местоположение</span>
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.city.label }}
+                        </div>
+                        <div class="col-12">
+                             {% if current_user.account.city %}
+                                {{ form_edit_account.city(class="form-control", value=current_user.account.location.city) }}
+                            {% else %}
+                                {{ form_edit_account.city(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.region.label }}
+                        </div>
+                        <div class="col-12">
+                             {% if current_user.account.region %}
+                                {{ form_edit_account.region(class="form-control", value=current_user.account.location.region) }}
+                            {% else %}
+                                {{ form_edit_account.region(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.country.label }}
+                        </div>
+                        <div class="col-12">
+                             {% if current_user.account.country %}
+                                {{ form_edit_account.country(class="form-control", value=current_user.account.location.country) }}
+                            {% else %}
+                                {{ form_edit_account.country(class="form-control") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 data-section">
+                    <div class="row">
+                         <div class="col-12">
+                            <span>Дополнительное</span>
+                         </div>
+                        <div class="col-12">
+                            {{ form_edit_account.interests.label }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.interests(class="form-control", rows="7") }}
+                        </div>
+                         <div class="col-12">
+                            {{ form_edit_account.about_me.label }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_edit_account.about_me(class="form-control", rows="7") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    {{ form_edit_account.submit(class="btn bg-primary text-white") }}
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+

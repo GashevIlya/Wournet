@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block link_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/data.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/reviews.css') }}">
+{% endblock %}
+{% block title %} Аккаунт {{ user.nickname }} {% endblock %}
+{% block content %}
+      <div class="account col-lg-8 col-md-7 col-12">
+            <div class="row m-auto">
+                <div class="main-info col-12 bg-white">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="avatar col">
+                                    <img src="{{ avatars.gravatar(user.user.hash_gmail()) }}">
+                                </div>
+                                {% if user.id == current_user.id %}
+                                    <div class="col text-end">
+                                        <button class="btn bg-primary text-white" onclick="document.location.href='{{ url_for('account.edit') }}'">
+                                            <img src="{{ url_for('static', filename='images/account/edit.png') }}">
+                                            <span class="d-none d-sm-inline">Редактировать</span>
+                                        </button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn bg-danger text-white" onclick="document.location.href='{{ url_for('auth.logout') }}'">
+                                            <img src="{{ url_for('static', filename='images/account/logout.png') }}">
+                                            <span class="d-none d-sm-inline">Выйти</span>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="nickname col-12">
+                            <span>{{ user.nickname }}</span>
+                        </div>
+                        <div class="nav-menu col-12">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <button class="nav-link" hx-get="{{ url_for('account.data', nickname=user.nickname) }}" hx-target="#content" hx-trigger="click delay:500ms">Данные</button>
+                                </li>
+                                 <li class="nav-item">
+                                    <button class="nav-link" hx-get="{{ url_for('account.questions', nickname=user.nickname) }}" hx-target="#content" hx-trigger="click delay:500ms">Вопросы</button>
+                                </li>
+                                <li class="nav-item">
+                                  <button class="nav-link" hx-get="{{ url_for('account.reviews', nickname=user.nickname) }}"  hx-target="#content" hx-trigger="click delay:500ms">Отзывы</button>
+                                </li>
+                                {% if user.id == current_user.id %}
+                                    <li class="nav-item">
+                                      <button class="nav-link" hx-get="{{ url_for('account.drafts') }}"  hx-target="#content" hx-trigger="click delay:500ms">Черновики</button>
+                                    </li>
+                                {% endif %}
+                              </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="data col-12 bg-white">
+                    <div id="content" class="row" hx-get="{{ url_for('account.data', nickname=user.nickname) }}" hx-trigger="load delay:500ms"></div>
+                </div>
+            </div>
+        </div>
+        <div class="additional-info col-lg-4 col-md-5 col-12">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                           <span>Информация</span>
+                        </div>
+                        <div class="card-body" hx-get="{{ url_for('account.information', nickname=user.nickname) }}" hx-trigger="load delay:500ms" hx-indicator="#loader-info">
+                            <div id="loader-info" class="htmx-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+              <div class="col-12">
+                <div class="currency card">
+                    <div class="card-header">
+                        <span>Курс валют</span>
+                    </div>
+                    <div class="card-body" hx-get="{{ url_for('account.currency_rate') }}" hx-trigger="load delay:500ms" hx-indicator="#loader-currency-rate">
+                        <div id="loader-currency-rate" class="htmx-indicator"></div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="currency card">
+                    <div class="card-header">
+                        <span>Курс криптовалют</span>
+                    </div>
+                    <div class="card-body" hx-get="{{ url_for('account.cryptocurrency_rate') }}" hx-trigger="load delay:500ms" hx-indicator="#loader-cryptocurrency-rate">
+                        <div id="loader-cryptocurrency-rate" class="htmx-indicator"></div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+{% endblock %}
+{% block  script %}
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <script src="{{ url_for('static', filename='js/reviews.js') }}"></script>
+{% endblock %}
+

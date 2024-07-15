@@ -1,0 +1,136 @@
+ <div class="col-12">
+     <div class="accordion">
+         <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#personal-data">
+                Персональные
+              </button>
+            </h2>
+            <div id="personal-data" class="accordion-collapse collapse show">
+              <div class="accordion-body">
+                  <div class="row">
+                      {% if user.id == current_user.id %}
+                          <div class="col-12">
+                              <span>Gmail</span>
+                          </div>
+                          <div class="col-12">
+                              <input class="form-control" type="email" value="{{ current_user.gmail }}" readonly>
+                          </div>
+                      {% endif %}
+                      <div class="col-12">
+                          <span>Никнейм</span>
+                      </div>
+                      <div class="col-12">
+                          <input class="form-control" type="text" value="{{ user.nickname }}" readonly>
+                      </div>
+                  </div>
+              </div>
+            </div>
+         </div>
+         <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#general-data">
+                Общие
+              </button>
+            </h2>
+            <div id="general-data" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                  <div class="row">
+                      <div class="col-12">
+                          <span>Фамилия</span>
+                      </div>
+                      <div class="col-12">
+                          <input class="form-control" type="text" value="{% if user.surname %} {{ user.surname }} {% endif %}" readonly>
+                      </div>
+                      <div class="col-12">
+                          <span>Имя</span>
+                      </div>
+                      <div class="col-12">
+                          <input class="form-control" type="text" value="{% if user.name %} {{ user.name }} {% endif %}" readonly>
+                      </div>
+                       <div class="col-12">
+                           <span>Дата рождения</span>
+                      </div>
+                      <div class="col-12">
+                          <input type="text" value="{% if user.date_of_birth %} {{ user.format_date_of_birth() }} {% endif %}" class="form-control" readonly>
+                      </div>
+                      <div class="col-12">
+                          <span>Пол</span>
+                      </div>
+                      <div class="col-12">
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="gender-user" id="gender-man" {% if user.gender.name == 'man' %} checked {% else %} disabled {% endif %}>
+                              <label class="form-check-label" for="gender-man">Муж</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="gender-user" id="gender-woman" {% if user.gender.name == 'woman' %} checked {% else %} disabled {% endif %}>
+                              <label class="form-check-label" for="gender-woman">Жен</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="gender-user" id="not-indicated" {% if user.gender.name == 'not_indicated' %} checked {% else %} disabled {% endif %}>
+                              <label class="form-check-label" for="not-indicated">Не указано</label>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+         </div>
+         <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#location-data">
+                Местоположение
+              </button>
+            </h2>
+            <div id="location-data" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                  <div class="row">
+                       <div class="col-12">
+                          <span>Город</span>
+                      </div>
+                      <div class="col-12">
+                          <input class="form-control" type="text" value="{% if user.location.city %} {{ user.location.city }} {% endif %}" readonly>
+                      </div>
+                      <div class="col-12">
+                          <span>Регион/Область</span>
+                      </div>
+                      <div class="col-12">
+                          <input class="form-control" type="text" value="{% if user.location.region %} {{ user.location.region }} {% endif %}" readonly>
+                      </div>
+                      <div class="col-12">
+                          <span>Страна</span>
+                      </div>
+                      <div class="col-12">
+                          <input class="form-control" type="text" value="{% if user.location.country %} {{ user.location.country }} {% endif %}" readonly>
+                      </div>
+                  </div>
+              </div>
+            </div>
+         </div>
+         <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#additional-data">
+                Дополнительное
+              </button>
+            </h2>
+            <div id="additional-data" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                  <div class="row">
+                      <div class="col-12">
+                          <span>Интересы</span>
+                      </div>
+                      <div class="col-12">
+                          <textarea class="form-control" readonly rows="7">{% if user.interests %} {{ user.interests }} {% endif %}</textarea>
+                      </div>
+                      <div class="col-12">
+                          <span>О себе</span>
+                      </div>
+                      <div class="col-12">
+                          <textarea class="form-control" readonly rows="7">{% if user.about_me %} {{ user.about_me }} {% endif %}</textarea>
+                      </div>
+                  </div>
+              </div>
+            </div>
+         </div>
+     </div>
+</div>
+
