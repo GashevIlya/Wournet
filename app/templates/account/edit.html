@@ -1,4 +1,4 @@
-{% extends "base_content.html" %}
+{% extends "common.html" %}
 {% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/account/edit.css') }}"> {% endblock %}
 {% block title %} Редактировать аккаунт {% endblock %}
 {% block header %} Редактировать аккаунт {% endblock %}
@@ -28,6 +28,7 @@
                         </div>
                         <div class="col-12">
                             {{ form_edit_account.nickname.label }}
+                            <img src="{{ url_for('static', filename='images/base/required_input.png') }}" class="required_input">
                         </div>
                         <div class="col-12">
                             {{ form_edit_account.nickname(class="form-control", value=current_user.account.nickname) }}
@@ -71,6 +72,7 @@
                         </div>
                         <div class="col-12">
                             {{ form_edit_account.gender.label }}
+                            <img src="{{ url_for('static', filename='images/base/required_input.png') }}" class="required_input">
                         </div>
                         <div class="col-12">
                             {% for gender in form_edit_account.gender %}

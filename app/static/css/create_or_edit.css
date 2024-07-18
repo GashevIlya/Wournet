@@ -6,3 +6,10 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
 }
+.section form p label.form-check-label {
+    font-size: 16px;
+}
+.section form p select, .section form p input[type="checkbox"] {
+    cursor: pointer;
+}
+

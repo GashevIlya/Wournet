@@ -2,8 +2,8 @@ from flask import render_template, request, flash
 from flask_login import login_required, current_user
 from pycbrf.toolbox import ExchangeRates
 import arrow
-from app.manage import cg, db
-from app.main.models import Account, Reviews
+from app.manage import cg, db, cache
+from app.main.models import Account, Reviews, Questions
 from app.main.account.forms import EditAccountForm
 from app.main.account.__init__ import account
 
@@ -25,7 +25,11 @@ def data(nickname):
 @account.route('/<string:nickname>/questions')
 @login_required
 def questions(nickname):
-    return render_template('account/questions.html')
+    user = db.session.query(Account).filter_by(nickname=nickname).first_or_404()
+    page = request.args.get('page', type=int, default=1)
+    questions_user = user.questions.order_by(Questions.create_time.desc()).\
+        paginate(page=page, per_page=15, error_out=False)
+    return render_template('account/questions.html', questions_user=questions_user, user=user)
 
 
 @account.route('/<string:nickname>/reviews')
@@ -38,12 +42,6 @@ def reviews(nickname):
     return render_template('account/reviews.html', reviews_user=reviews_user, user=user)
 
 
-@account.route('/drafts')
-@login_required
-def drafts():
-    return render_template('account/drafts.html')
-
-
 @account.route('/<string:nickname>/information')
 @login_required
 def information(nickname):
@@ -53,6 +51,7 @@ def information(nickname):
 
 @account.route('/currency/rate')
 @login_required
+@cache.cached(timeout=3600)
 def currency_rate():
     rates = ExchangeRates(str(arrow.now('Europe/Moscow').date()))
     return render_template('account/currency_rate.html', currency_dollar=rates['USD'].value,
@@ -61,6 +60,7 @@ def currency_rate():
 
 @account.route('/cryptocurrency/rate')
 @login_required
+@cache.cached(timeout=3600)
 def cryptocurrency_rate():
     cryptocurrency_bitcoin = cg.get_price(ids='bitcoin', vs_currencies='rub')
     cryptocurrency_ton = cg.get_price(ids='the-open-network', vs_currencies='rub')

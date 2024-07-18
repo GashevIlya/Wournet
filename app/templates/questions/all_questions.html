@@ -1,0 +1,86 @@
+{% extends "common.html" %}
+{% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/questions/main.css') }}">  {% endblock %}
+{% block title %} Все вопросы {% endblock %}
+{% block header %} Все вопросы {% endblock %}
+{% block addition %}
+    <div class="col-12 sort">
+       <button class="btn btn-sm btn-outline-primary {% if sort == 'popular' %} active {% endif %}" onclick="document.location.href='{{ url_for('questions.all_questions', sort='popular') }}'">Популярные</button>
+       <button class="btn btn-sm btn-outline-success {% if sort == 'unanswered' %} active {% endif %}" onclick="document.location.href='{{ url_for('questions.all_questions', sort='unanswered') }}'">Неотвеченные</button>
+       <button class="btn btn-sm btn-outline-info {% if sort == 'new' %} active {% endif %}" onclick="document.location.href='{{ url_for('questions.all_questions', sort='new') }}'">Новые</button>
+       <button class="btn btn-sm btn-outline-secondary {% if sort == 'old' %} active {% endif %}" onclick="document.location.href='{{ url_for('questions.all_questions', sort='old') }}'">Старые</button>
+    </div>
+{% endblock %}
+{% block section %}
+     {% if questions.items != [] %}
+         {% for question in questions %}
+             <div class="col-12 question shadow p-3 section">
+                 <div class="row">
+                     <div class="col-12 category">
+                        <span>{{ question.category }}</span>
+                     </div>
+                     <div class="col-12 author">
+                         <div class="row">
+                             <div class="col-auto">
+                                 <img src="{{ avatars.gravatar(question.account.user.hash_gmail()) }}">
+                             </div>
+                             <div class="col">
+                                 <a href="{{ url_for('account.account_user', nickname=question.account.nickname) }}">{{ question.account.nickname }}</a>
+                             </div>
+                         </div>
+                     </div>
+                      <div class="col-12">
+                          <div class="row">
+                              <div class="col-auto">
+                                  <span>Создан:</span>
+                              </div>
+                              <div class="col-auto">
+                                  <span class="value">{{ question.format_create_time() }}</span>
+                              </div>
+                              <div class="col-auto">
+                                  <span>Просмотров:</span>
+                              </div>
+                              <div class="col-auto">
+                                  <span class="value">{{ question.format_views_count() }}</span>
+                              </div>
+                              <div class="col-auto">
+                                  <span>Ответов:</span>
+                              </div>
+                              <div class="col-auto">
+                                  <span class="value">{{ question.count_answers() }}</span>
+                              </div>
+                          </div>
+                     </div>
+                     <div class="col-12 header">
+                         <a href="{{ url_for('questions.about_question', id_question=question.id) }}">{{ question.header }}</a>
+                     </div>
+                     <div class="col-12 share">
+                         <span>Поделиться: </span>
+                         <a href="https://telegram.me/share/url?url=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/telegram_icon.png') }}"></a>
+                         <a href="https://vkontakte.ru/share.php?url=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/vk_icon.png') }}"></a>
+                         <a href="https://web.whatsapp.com/send?text=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/whatsapp_icon.png') }}"></a>
+                     </div>
+                 </div>
+             </div>
+         {% endfor %}
+         <div class="col-12">
+            <nav>
+              <ul class="pagination justify-content-center">
+                <li class="page-item {% if not questions.has_prev %} disabled {% endif %}">
+                  <a class="page-link" href="{{ url_for('questions.all_questions', page=questions.prev_num, sort=sort) }}">Предыдущий</a>
+                </li>
+                {% for page in questions.iter_pages() %}
+                    <li class="page-item {% if questions.page == page %} active {% endif %}"><a class="page-link" {% if page != None %} href="{{ url_for('questions.all_questions', page=page, sort=sort) }}" {% endif %}>{% if page != None %} {{ page }} {% else %} ... {% endif %}</a></li>
+                {% endfor %}
+                <li class="page-item {% if not questions.has_next %} disabled {% endif %}">
+                  <a class="page-link" href="{{ url_for('questions.all_questions', page=questions.next_num, sort=sort) }}">Следующий</a>
+                </li>
+              </ul>
+            </nav>
+         </div>
+     {% else %}
+         <div class="col-12 shadow p-3 text-center section">
+             <h6>Вопросов нет</h6>
+         </div>
+     {% endif %}
+{% endblock %}
+

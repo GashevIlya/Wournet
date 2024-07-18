@@ -1,12 +1,12 @@
 {% extends "common.html" %}
 {% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/create_or_edit.css') }}"> {% endblock %}
-{% block title %} Создать вопрос {% endblock %}
-{% block header %} Создать вопрос {% endblock %}
+{% block title %} Редактировать вопрос {% endblock %}
+{% block header %} Редактировать вопрос {% endblock %}
 {% block section %}
        <div class="col-12 section">
             <form method="post">
-                {{ form_create_question.hidden_tag() }}
-                 {% for field, errors in form_create_question.errors.items() %}
+                {{ form_edit_question.hidden_tag() }}
+                 {% for field, errors in form_edit_question.errors.items() %}
                      <p><div class="alert alert-danger alert-dismissible fade show">
                          {% if field == 'recaptcha' %}
                              Неверно выполнена recaptcha
@@ -23,33 +23,33 @@
                         </div></p>
                     {% endfor %}
                     <p>
-                        {{ form_create_question.header.label }}
+                        {{ form_edit_question.header.label }}
                         <img src="{{ url_for('static', filename='images/base/required_input.png') }}" class="required_input">
                     </p>
                     <p>
-                        {{ form_create_question.header(class="form-control") }}
+                        {{ form_edit_question.header(class="form-control") }}
                     </p>
                     <p>
-                        {{ form_create_question.description.label }}
+                        {{ form_edit_question.description.label }}
                     </p>
                     <p>
                         <span class="form-text">Длина от 5 до 3000 символов</span>
                     </p>
                     <p>
-                        {{ form_create_question.description() }}
+                        {{ form_edit_question.description() }}
                     </p>
                     <p>
-                        {{ form_create_question.category.label }}
+                        {{ form_edit_question.category.label }}
                         <img src="{{ url_for('static', filename='images/base/required_input.png') }}" class="required_input">
                     </p>
                     <p>
-                        {{ form_create_question.category(class="form-select") }}
+                        {{ form_edit_question.category(class="form-select") }}
                     </p>
                     <p>
-                        {{ form_create_question.recaptcha() }}
+                        {{ form_edit_question.recaptcha() }}
                     </p>
                     <p>
-                        {{ form_create_question.submit(class="btn bg-primary text-white") }}
+                        {{ form_edit_question.submit(class="btn bg-primary text-white") }}
                     </p>
             </form>
        </div>
@@ -58,3 +58,4 @@
     {{ ckeditor.load() }}
     {{ ckeditor.config(name='description') }}
 {% endblock %}
+

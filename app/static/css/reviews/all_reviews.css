@@ -13,11 +13,13 @@
 .section div.col-auto span.subject {
     font-size: 18px;
     font-family: "Lora", Georgia, "Times New Roman", Times, serif;
-    font-weight: bolder;
+    color: black;
 }
 .section div.col-auto span {
-    font-size: 16px;
+    font-size: 15px;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #5d5d5d;
+    font-weight: bolder;
 }
 .expand-text {
     cursor: pointer;

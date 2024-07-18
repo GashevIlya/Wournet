@@ -1,15 +1,8 @@
-from app.manage import db, app
+from app.manage import db
 from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, ENUM, DATETIME, BOOLEAN, DATE
 import arrow
 from flask_login import UserMixin
 import hashlib
-
-
-category_questions = db.Table(
-    'category_questions',
-    db.Column('questions_id', INTEGER, db.ForeignKey('questions.id')),
-    db.Column('category_id', INTEGER, db.ForeignKey('category.id'))
-)
 
 
 class User(db.Model, UserMixin):
@@ -69,7 +62,7 @@ class Account(db.Model):
         return self.questions.count()
 
     def count_score(self):
-        return self.answers.count()
+        return self.answers.count() * 10
 
     def __repr__(self):
         return f'{self.id}'
@@ -120,22 +113,33 @@ class Questions(db.Model):
     description = db.Column(VARCHAR(5000), nullable=True)
     create_time = db.Column(DATETIME, nullable=False, default=arrow.now('Europe/Moscow').datetime)
     views_count = db.Column(INTEGER, nullable=False, default=0)
-    complexity = db.Column(ENUM('hard', 'normal', 'easy'), nullable=False)
-    is_draft = db.Column(BOOLEAN, nullable=False, default=False)
+    category = db.Column(VARCHAR(50), nullable=False)
     account_id = db.Column(INTEGER, db.ForeignKey('account.id'))
-    category = db.relationship('Category', secondary=category_questions, backref=db.backref('questions'),
-                               lazy='dynamic', cascade='all, delete')
     answers = db.relationship('Answers', backref=db.backref('questions'), cascade='all, delete', lazy='dynamic')
 
-    def __repr__(self):
-        return f'{self.id}'
+    def format_create_time(self):
+        return arrow.get(self.create_time).format('DD MMM YYYY.г в H:mm', locale='ru')
 
+    def format_views_count(self):
+        if self.views_count < 1000:
+            return self.views_count
+        elif 1000 <= self.views_count < 10000:
+            return f'{str(self.views_count)[0]}.{str(self.views_count)[1]} тыс'
+        elif 10000 <= self.views_count < 100000:
+            return f'{str(self.views_count)[:2]}.{str(self.views_count)[2]} тыс'
+        elif 100000 <= self.views_count < 1000000:
+            return f'{str(self.views_count)[:3]}.{str(self.views_count)[3]} тыс'
+        elif 1000000 <= self.views_count < 10000000:
+            return f'{str(self.views_count)[0]}.{str(self.views_count)[1]} млн'
+        elif 10000000 <= self.views_count < 100000000:
+            return f'{str(self.views_count)[:2]}.{str(self.views_count)[2]} млн'
+        elif 100000000 <= self.views_count < 1000000000:
+            return f'{str(self.views_count)[:3]}.{str(self.views_count)[3]} млн'
+        else:
+            return f'{str(self.views_count)[0]}.{str(self.views_count)[1]} млрд'
 
-class Category(db.Model):
-    __tablename__ = 'category'
-
-    id = db.Column(INTEGER, primary_key=True)
-    name = db.Column(VARCHAR(50), nullable=False, unique=True)
+    def count_answers(self):
+        return self.answers.count()
 
     def __repr__(self):
         return f'{self.id}'
@@ -149,6 +153,9 @@ class Answers(db.Model):
     create_time = db.Column(DATETIME, nullable=False, default=arrow.now('Europe/Moscow').datetime)
     questions_id = db.Column(INTEGER, db.ForeignKey('questions.id'))
     account_id = db.Column(INTEGER, db.ForeignKey('account.id'))
+
+    def format_create_time(self):
+        return arrow.get(self.create_time).format('DD MMM YYYY.г в H:mm', locale='ru')
 
     def __repr__(self):
         return f'{self.id}'

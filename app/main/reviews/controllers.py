@@ -1,4 +1,4 @@
-from flask import render_template, flash, request
+from flask import render_template, flash, request, redirect, url_for
 from flask_login import login_required, current_user
 from app.main.reviews.forms import CreateReviewForm, EditReviewForm
 from app.manage import db
@@ -15,10 +15,10 @@ def create():
             review = Reviews(text=form_create_review.review.data, account_id=current_user.id)
             db.session.add(review)
             db.session.commit()
-            flash(message='Отзыв создан', category='success')
+            return redirect(url_for('account.account_user', nickname=current_user.account.nickname))
         except Exception:
             db.session.rollback()
-            flash(message='Отзыв не создан', category='danger')
+            flash(message='Отзыв не создан')
     return render_template('reviews/create.html', form_create_review=form_create_review)
 
 
@@ -34,12 +34,12 @@ def all_reviews():
 @reviews.route('/review/delete/<int:id_review>', methods=['DELETE'])
 @login_required
 def delete_review(id_review):
-    review = Reviews.query.filter_by(id=id_review, account_id=current_user.id).first_or_404()
+    review = db.session.query(Reviews).filter_by(id=id_review, account_id=current_user.id).first_or_404()
     try:
         db.session.delete(review)
         db.session.commit()
     except Exception:
-        pass
+        db.session.rollback()
     return ''
 
 
@@ -53,10 +53,10 @@ def edit(id_review):
             review.text = form_edit_review.review.data
             db.session.merge(review)
             db.session.commit()
-            flash(message='Отзыв отредактировался', category='success')
+            return redirect(url_for('account.account_user', nickname=current_user.account.nickname))
         except Exception:
             db.session.rollback()
-            flash(message='Отзыв не отредактировался', category='danger')
+            flash(message='Отзыв не отредактировался')
     elif request.method == 'GET':
         form_edit_review.review.data = review.text
     return render_template('reviews/edit.html', form_edit_review=form_edit_review)

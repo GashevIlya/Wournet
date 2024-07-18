@@ -1,0 +1,69 @@
+.htmx-indicator div {
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #3498db;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+.question .category {
+    font-size: 18px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bolder;
+    color: grey;
+}
+.question div.col-12 {
+    margin-bottom: 5px;
+}
+.question .author img {
+    width: 30px;
+    height: 30px;
+}
+.question .author a {
+    font-size: 18px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bolder;
+    color: blue;
+}
+.question .share img {
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+}
+.question .share {
+    text-align: right;
+}
+.question div.col-auto span, .question .share span {
+    font-size: 15px;
+    font-weight: bolder;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.question div.col-auto span.value {
+    color: #4d4d4d;
+}
+.question .header {
+    word-break: break-word;
+}
+.question .header a {
+    font-size: 20px;
+    font-family: "Lora", Georgia, "Times New Roman", Times, serif;
+    font-weight: bolder;
+    text-decoration: none;
+}
+.random {
+    border-bottom: 1px solid #c9c8c8;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.section form p label {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bolder;
+}
+.section .description {
+    word-break: break-word;
+    font-size: 16px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

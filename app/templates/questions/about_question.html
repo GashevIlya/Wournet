@@ -1,0 +1,116 @@
+{% extends "common.html" %}
+{% block addition_link_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/questions/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/questions/answers.css') }}">
+{% endblock %}
+{% block title %} {{ question.header }} {% endblock %}
+{% block header %} Вопрос от {{ question.account.nickname }} {% endblock %}
+{% block section %}
+ <div class="col-12 question section">
+     <div class="row">
+         <div class="col-12 category">
+            <span>{{ question.category }}</span>
+         </div>
+         <div class="col-12 author">
+             <div class="row">
+                 <div class="col-auto">
+                     <img src="{{ avatars.gravatar(question.account.user.hash_gmail()) }}">
+                 </div>
+                 <div class="col">
+                     <a href="{{ url_for('account.account_user', nickname=question.account.nickname) }}">{{ question.account.nickname }}</a>
+                 </div>
+             </div>
+         </div>
+          <div class="col-12">
+              <div class="row">
+                  <div class="col-auto">
+                      <span>Создан:</span>
+                  </div>
+                  <div class="col-auto">
+                      <span class="value">{{ question.format_create_time() }}</span>
+                  </div>
+                  <div class="col-auto">
+                      <span>Просмотров:</span>
+                  </div>
+                  <div class="col-auto">
+                      <span class="value">{{ question.format_views_count() }}</span>
+                  </div>
+                  <div class="col-auto">
+                      <span>Ответов:</span>
+                  </div>
+                  <div class="col-auto">
+                      <span class="value">{{ question.count_answers() }}</span>
+                  </div>
+              </div>
+         </div>
+         <div class="col-12 header">
+             <a href="{{ url_for('questions.about_question', id_question=question.id) }}">{{ question.header }}</a>
+         </div>
+         <div class="col-12 description">
+             {{ question.description|safe }}
+         </div>
+         <div class="col-12 share">
+             <span>Поделиться: </span>
+             <a href="https://telegram.me/share/url?url=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/telegram_icon.png') }}"></a>
+             <a href="https://vkontakte.ru/share.php?url=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/vk_icon.png') }}"></a>
+             <a href="https://web.whatsapp.com/send?text=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/whatsapp_icon.png') }}"></a>
+         </div>
+     </div>
+ </div>
+ <div class="col-12 section">
+     <span class="header">Все ответы</span>
+ </div>
+ <div class="col-12 section">
+     <div class="row" hx-get="{{ url_for('questions.answers', id_question=question.id) }}" hx-trigger="load delay:500ms" hx-indicator="#loader-answers">
+         <div id="loader-answers" class="col-12 htmx-indicator">
+             <div></div>
+         </div>
+     </div>
+ </div>
+ <div class="col-12 section">
+     <form method="post">
+         {% for field, errors in form_create_answer.errors.items() %}
+             <p><div class="alert alert-danger alert-dismissible fade show">
+                 {% if field == 'recaptcha' %}
+                     Неверно выполнена recaptcha
+                 {% else %}
+                     {{ ', '.join(errors) }}
+                 {% endif %}
+                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+             </div></p>
+         {% endfor %}
+         {% for cat, msg in get_flashed_messages(True) %}
+            <p><div class="alert alert-{{ cat }} alert-dismissible fade show">
+                 {{ msg }}
+                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div></p>
+        {% endfor %}
+         {{ form_create_answer.hidden_tag() }}
+         <p>
+             {{ form_create_answer.answer.label }}
+             <img src="{{ url_for('static', filename='images/base/required_input.png') }}" class="required_input">
+         </p>
+         <p><span class="form-text">Длина должна быть от 5 до 3000</span></p>
+         <p>{{ form_create_answer.answer() }}</p>
+         <p>{{ form_create_answer.recaptcha() }}</p>
+         <p>{{ form_create_answer.submit(class="btn bg-primary text-white") }}</p>
+     </form>
+ </div>
+ <div class="col-12 section">
+     <span class="header">Другие вопросы</span>
+ </div>
+ <div class="col-12 section">
+    <div class="row"hx-get="{{ url_for('questions.random_questions', id_question=question.id) }}" hx-trigger="load delay:500ms" hx-indicator="#loader-random-questions">
+         <div id="loader-random-questions" class="col-12 htmx-indicator">
+             <div></div>
+         </div>
+    </div>
+ </div>
+{% endblock %}
+{% block script %}
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <script src="{{ url_for('static', filename='js/expand_text.js') }}"></script>
+    {{ ckeditor.load(pkg_type='basic') }}
+    {{ ckeditor.config(name='answer') }}
+{% endblock %}
+

@@ -1,0 +1,171 @@
+{% extends "common.html" %}
+{% block title %} Результаты поиска {% endblock %}
+{% block addition_link_style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/questions/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/users/all_users.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews/all_reviews.css') }}">
+{% endblock %}
+{% block header %} Результаты поиска по запросу "{{ q }}" {% endblock %}
+{% block addition %}
+    <div class="col-12 sort">
+        <div class="row">
+            <div class="col-auto">
+                <button class="btn btn-sm btn-outline-primary {% if p == 'questions' %} active {% endif %}" onclick="document.location.href='{{ url_for('search.search_results', q=q, p='questions') }}'">Вопросы</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-sm btn-outline-info {% if p == 'users' %} active {% endif %}" onclick="document.location.href='{{ url_for('search.search_results', q=q, p='users') }}'">Пользователи</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-sm btn-outline-success {% if p == 'reviews' %} active {% endif %}" onclick="document.location.href='{{ url_for('search.search_results', q=q, p='reviews') }}'">Отзывы</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block section %}
+    {% if query.items != [] %}
+        {% if p == 'questions' %}
+             {% for question in query %}
+                 <div class="col-12 question shadow p-3 section">
+                     <div class="row">
+                             <div class="col-12 category">
+                                <span>{{ question.category }}</span>
+                             </div>
+                             <div class="col-12 author">
+                                 <div class="row">
+                                     <div class="col-auto">
+                                         <img src="{{ avatars.gravatar(question.account.user.hash_gmail()) }}">
+                                     </div>
+                                     <div class="col">
+                                         <a href="{{ url_for('account.account_user', nickname=question.account.nickname) }}">{{ question.account.nickname }}</a>
+                                     </div>
+                                 </div>
+                             </div>
+                              <div class="col-12">
+                                  <div class="row">
+                                      <div class="col-auto">
+                                          <span>Создан:</span>
+                                      </div>
+                                      <div class="col-auto">
+                                          <span class="value">{{ question.format_create_time() }}</span>
+                                      </div>
+                                      <div class="col-auto">
+                                          <span>Просмотров:</span>
+                                      </div>
+                                      <div class="col-auto">
+                                          <span class="value">{{ question.format_views_count() }}</span>
+                                      </div>
+                                      <div class="col-auto">
+                                          <span>Ответов:</span>
+                                      </div>
+                                      <div class="col-auto">
+                                          <span class="value">{{ question.count_answers() }}</span>
+                                      </div>
+                                  </div>
+                             </div>
+                             <div class="col-12 header">
+                                 <a href="{{ url_for('questions.about_question', id_question=question.id) }}">{{ question.header }}</a>
+                             </div>
+                             <div class="col-12 share">
+                                 <span>Поделиться: </span>
+                                 <a href="https://telegram.me/share/url?url=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/telegram_icon.png') }}"></a>
+                                 <a href="https://vkontakte.ru/share.php?url=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/vk_icon.png') }}"></a>
+                                 <a href="https://web.whatsapp.com/send?text=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/whatsapp_icon.png') }}"></a>
+                             </div>
+                         </div>
+                     </div>
+                 {% endfor %}
+            {% elif p == 'reviews' %}
+                      {% for review in query %}
+                         <div class="col-12 shadow p-3 section">
+                             <div class="row">
+                                 <div class="col-sm-auto col-12 avatar">
+                                     <img src="{{ avatars.gravatar(review.account.user.hash_gmail()) }}">
+                                 </div>
+                                 <div class="col">
+                                     <div class="row">
+                                         <div class="col-12">
+                                             <div class="row">
+                                                 <div class="col-auto">
+                                                     <span class="subject">Никнейм:</span>
+                                                 </div>
+                                                 <div class="col-auto">
+                                                      <a href="{{ url_for('account.account_user', nickname=review.account.nickname) }}">{{ review.account.nickname }}</a>
+                                                 </div>
+                                                 <div class="col-auto">
+                                                     <span class="subject">Создан:</span>
+                                                 </div>
+                                                 <div class="col-auto">
+                                                      <span>{{ review.format_create_time() }}</span>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                         <div class="col-12 text">
+                                             <div id="collapse-{{ review.id }}">{{ review.text }}</div>
+                                         </div>
+                                         {% if review.text|length > 300 %}
+                                             <div class="col-12">
+                                                 <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover expand-text" data-collapse-id="{{ review.id }}">Развернуть</a>
+                                             </div>
+                                         {% endif %}
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                      {% endfor %}
+            {% else %}
+                <div class="col-12 section">
+                   <div class="row">
+                       {% for user in query %}
+                               <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                                   <div class="card">
+                                       <div class="card-header">
+                                           <img src="{{ avatars.gravatar(user.user.hash_gmail()) }}">
+                                       </div>
+                                      <div class="card-body">
+                                          <div class="row">
+                                              <div class="col-12">
+                                                  <div class="card-title"><h4>{{ user.nickname }}</h4></div>
+                                              </div>
+                                              <div class="col-12 card-text">
+                                                  <p><span>Вопросов:</span> <span class="text-primary">{{ user.count_questions() }}</span></p>
+                                                  <p><span>Отзывов:</span> <span class="text-primary">{{ user.count_reviews() }}</span></p>
+                                                  <p><span>Очков:</span> <span class="text-primary">{{ user.count_score() }}</span></p>
+                                              </div>
+                                              <div class="col-12">
+                                                  <button class="btn btn-sm btn-secondary" onclick="document.location.href='{{ url_for('account.account_user', nickname=user.nickname) }}'">
+                                                      Перейти в аккаунт</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                   </div>
+                               </div>
+                           {% endfor %}
+                   </div>
+                </div>
+            {% endif %}
+            <div class="col-12">
+                <nav>
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not query.has_prev %} disabled {% endif %}">
+                      <a class="page-link" href="{{ url_for('search.search_results', page=query.prev_num, q=q, p=p) }}">Предыдущий</a>
+                    </li>
+                    {% for page in query.iter_pages() %}
+                        <li class="page-item {% if query.page == page %} active {% endif %}"><a class="page-link" {% if page != None %} href="{{ url_for('search.search_results', page=page, q=q, p=p) }}" {% endif %}>{% if page != None %} {{ page }} {% else %} ... {% endif %}</a></li>
+                    {% endfor %}
+                    <li class="page-item {% if not query.has_next %} disabled {% endif %}">
+                      <a class="page-link" href="{{ url_for('search.search_results', page=query.next_num, q=q, p=p) }}">Следующий</a>
+                    </li>
+                  </ul>
+                </nav>
+             </div>
+    {% else %}
+        <div class="col-12 section text-center">
+            <h6>Ничего не найдено</h6>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block script %}
+    <script src="{{ url_for('static', filename='js/expand_text.js') }}"></script>
+{% endblock %}
+
+

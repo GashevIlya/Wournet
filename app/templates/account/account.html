@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/account/data.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/account/reviews.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/questions.css') }}">
 {% endblock %}
 {% block title %} Аккаунт {{ user.nickname }} {% endblock %}
 {% block content %}
@@ -45,11 +46,6 @@
                                 <li class="nav-item">
                                   <button class="nav-link" hx-get="{{ url_for('account.reviews', nickname=user.nickname) }}"  hx-target="#content" hx-trigger="click delay:500ms">Отзывы</button>
                                 </li>
-                                {% if user.id == current_user.id %}
-                                    <li class="nav-item">
-                                      <button class="nav-link" hx-get="{{ url_for('account.drafts') }}"  hx-target="#content" hx-trigger="click delay:500ms">Черновики</button>
-                                    </li>
-                                {% endif %}
                               </ul>
                         </div>
                     </div>
@@ -96,6 +92,6 @@
 {% endblock %}
 {% block  script %}
     <script src="https://unpkg.com/htmx.org@1.9.4"></script>
-    <script src="{{ url_for('static', filename='js/reviews.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/expand_text.js') }}"></script>
 {% endblock %}
 

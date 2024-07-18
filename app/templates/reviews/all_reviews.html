@@ -1,4 +1,4 @@
-{% extends "base_content.html" %}
+{% extends "common.html" %}
 {% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews/all_reviews.css') }}"> {% endblock %}
 {% block title %} Все отзывы {% endblock %}
 {% block header %} Все отзывы {% endblock %}
@@ -7,7 +7,7 @@
          {% for review in reviews_users %}
              <div class="col-12 shadow p-3 section">
                  <div class="row">
-                     <div class="col-auto avatar">
+                     <div class="col-sm-auto col-12 avatar">
                          <img src="{{ avatars.gravatar(review.account.user.hash_gmail()) }}">
                      </div>
                      <div class="col">
@@ -21,7 +21,7 @@
                                           <a href="{{ url_for('account.account_user', nickname=review.account.nickname) }}">{{ review.account.nickname }}</a>
                                      </div>
                                      <div class="col-auto">
-                                         <span class="subject">Дата создания:</span>
+                                         <span class="subject">Создан:</span>
                                      </div>
                                      <div class="col-auto">
                                           <span>{{ review.format_create_time() }}</span>
@@ -63,6 +63,6 @@
      {% endif %}
 {% endblock %}
 {% block script %}
-    <script src="{{ url_for('static', filename='js/reviews.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/expand_text.js') }}"></script>
 {% endblock %}
 

@@ -1,9 +1,69 @@
-<tr hx-get="{{ url_for('account.questions', nickname=current_user.account.nickname) }}"
-    hx-trigger="revealed"
-    hx-swap="afterend">
-  <td>Agent Smith</td>
-  <td>void29@null.org</td>
-  <td>55F49448C0</td>
-</tr>
+{% if questions_user.items != [] %}
+    {% for question in questions_user %}
+        <div class="col-12 question" id="question{{ question.id }}" {% if questions_user.has_next %}
+             hx-get="{{ url_for('account.questions', nickname=user.nickname, page=questions_user.next_num) }}"
+             hx-trigger="revealed"
+             hx-swap="afterend" {% endif %}>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col category">
+                            {{ question.category }}
+                        </div>
+                        {% if user.id == current_user.id %}
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-primary" onclick="document.location.href='{{ url_for('questions.edit', id_question=question.id) }}'">Редактировать</button>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-danger" hx-delete="{{ url_for('questions.delete_question', id_question=question.id) }}" hx-target="#question{{ question.id }} "  hx-swap="outerHTML" hx-confirm="Вы точно хотите удалить вопрос?">Удалить</button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-auto">
+                            <span>Создан:</span>
+                        </div>
+                        <div class="col-auto">
+                            <span class="value">{{ question.format_create_time() }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <span>Просмотров:</span>
+                        </div>
+                        <div class="col-auto">
+                            <span class="value">{{ question.format_views_count() }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <span>Ответов:</span>
+                        </div>
+                        <div class="col-auto">
+                            <span class="value">{{ question.count_answers() }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 header">
+                    <a href="{{ url_for('questions.about_question', id_question=question.id) }}">{{ question.header }}</a>
+                </div>
+                <div class="col-12 share">
+                    <span>Поделиться: </span>
+                    <a href="https://telegram.me/share/url?url=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/telegram_icon.png') }}"></a>
+                    <a href="https://vkontakte.ru/share.php?url=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/vk_icon.png') }}"></a>
+                    <a href="https://web.whatsapp.com/send?text=https://wournet.pythonanywhere.com/questions/{{ question.id }}"><img src="{{ url_for('static', filename='images/base/whatsapp_icon.png') }}"></a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="col-12 text-center">
+       <h6>
+           {% if user.id == current_user.id %}
+               У вас нет вопросов
+           {% else %}
+               У пользователя нет вопросов
+           {% endif %}
+       </h6>
+    </div>
+{% endif %}
 
 

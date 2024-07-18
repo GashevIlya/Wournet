@@ -5,7 +5,7 @@ load_dotenv()
 
 
 class Config:
-    DEBUG = True
+    DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
     SECRET_KEY = os.getenv('SECRET_KEY')
     MAIL_SERVER = 'smtp.gmail.com'
@@ -19,6 +19,8 @@ class Config:
     RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
     RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
     CKEDITOR_LANGUAGE = 'ru'
-    CKEDITOR_PKG_TYPE = 'standard'
-
+    CACHE_TYPE = 'redis'
+    CACHE_REDIS_URL = os.getenv('REDIS_URL')
+    RATELIMIT_STORAGE_URI = os.getenv('REDIS_URL')
+    REDIS_BROKER = os.getenv('REDIS_URL')
 

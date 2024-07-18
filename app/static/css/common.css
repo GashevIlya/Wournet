@@ -1,0 +1,26 @@
+.section {
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: white;
+}
+.section span.header {
+    font-size: 20px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bolder;
+}
+.required_input {
+    width: 10px;
+    margin-left: 5px;
+    margin-top: -1px;
+}
+div.sort {
+    margin-top: 15px;
+}
+.sort button {
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+.sort button.btn-outline-primary {
+    margin-left: 0;
+}
+

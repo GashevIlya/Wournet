@@ -1,5 +1,5 @@
-{% extends "base_content.html" %}
-{% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/reviews/create_and_edit.css') }}"> {% endblock %}
+{% extends "common.html" %}
+{% block addition_link_style %} <link rel="stylesheet" href="{{ url_for('static', filename='css/create_or_edit.css') }}"> {% endblock %}
 {% block title %} Редактировать отзыв {% endblock %}
 {% block header %} Редактировать отзыв {% endblock %}
 {% block section %}
@@ -11,14 +11,17 @@
                          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                      </div></p>
                 {% endfor %}
-                {% for cat, msg in get_flashed_messages(True) %}
-                    <p><div class="alert alert-{{ cat }} alert-dismissible fade show">
+                {% for msg in get_flashed_messages() %}
+                    <p><div class="alert alert-danger alert-dismissible fade show">
                          {{ msg }}
                          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div></p>
                 {% endfor %}
                 {{ form_edit_review.hidden_tag() }}
-                <p>{{ form_edit_review.review.label }}</p>
+                <p>
+                    {{ form_edit_review.review.label }}
+                    <img src="{{ url_for('static', filename='images/base/required_input.png') }}" class="required_input">
+                </p>
                 <p>{{ form_edit_review.review(class="form-control", rows="7") }}</p>
                 <p>{{ form_edit_review.recaptcha() }}</p>
                 <p>{{ form_edit_review.submit(class="btn bg-primary text-white") }}</p>
