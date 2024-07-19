@@ -56,7 +56,7 @@
         </div>
         </p>
        <p>{{ form_registration.recaptcha() }}</p>
-        <p class="privacy-policy">Нажимая "Зарегистрироваться" вы соглашаетесь с <a href="#">политикой конфиденциальности</a></p>
+        <p class="privacy-policy">Нажимая "Зарегистрироваться" вы соглашаетесь с <a href="{{ url_for('auth.privacy_policy') }}">политикой конфиденциальности</a></p>
         <p>{{ form_registration.submit(class="btn bg-primary text-white w-100") }}</p>
     </form>
 {% endblock %}

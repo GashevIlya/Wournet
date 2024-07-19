@@ -150,3 +150,9 @@ def change_password(token):
             return render_template('auth/change_password.html', form_change_password=form_change_password)
     return redirect(url_for('auth.entrance'))
 
+
+@auth.route('/privacy/policy')
+@check_authenticated_user
+def privacy_policy():
+    return render_template('auth/privacy_policy.html')
+

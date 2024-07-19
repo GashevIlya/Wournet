@@ -1,4 +1,4 @@
-from app.manage import db, app
+from app.manage import db
 from sqlalchemy.dialects.postgresql import INTEGER, VARCHAR, ENUM, TIMESTAMP, BOOLEAN, DATE
 import arrow
 from flask_login import UserMixin
@@ -159,9 +159,4 @@ class Answers(db.Model):
 
     def __repr__(self):
         return f'{self.id}'
-
-with app.app_context():
-    db.drop_all()
-    db.create_all()
-
 
