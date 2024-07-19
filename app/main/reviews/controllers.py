@@ -4,7 +4,6 @@ from app.main.reviews.forms import CreateReviewForm, EditReviewForm
 from app.manage import db
 from app.main.models import Reviews
 from app.main.reviews.__init__ import reviews
-import arrow
 
 
 @reviews.route('/review/create', methods=['GET', 'POST'])
@@ -13,8 +12,7 @@ def create():
     form_create_review = CreateReviewForm()
     if form_create_review.validate_on_submit():
         try:
-            review = Reviews(text=form_create_review.review.data, create_time=arrow.now('Europe/Moscow').datetime,
-                             account_id=current_user.id)
+            review = Reviews(text=form_create_review.review.data, account_id=current_user.id)
             db.session.add(review)
             db.session.commit()
             return redirect(url_for('account.account_user', nickname=current_user.account.nickname))
