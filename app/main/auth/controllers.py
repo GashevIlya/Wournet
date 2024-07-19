@@ -9,6 +9,7 @@ from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer
 from app.main.auth.__init__ import auth
 from threading import Thread
+import arrow
 
 
 @login_manager.user_loader
@@ -39,7 +40,7 @@ def create_user(gmail, password, nickname, role='user'):
     db.session.add(user)
     db.session.flush()
     role_user = Role(id=user.id, name=role)
-    account_user = Account(id=user.id, nickname=nickname)
+    account_user = Account(id=user.id, nickname=nickname, registered=arrow.now('Europe/Moscow').date())
     gender_user = Gender(id=user.id)
     location_user = Location(id=user.id)
     db.session.add_all([role_user, account_user, gender_user, location_user])

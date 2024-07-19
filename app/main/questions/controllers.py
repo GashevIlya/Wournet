@@ -6,6 +6,7 @@ from app.manage import db
 from app.main.models import Questions, Answers
 from sqlalchemy import func
 from enum import Enum
+import arrow
 
 
 class TypeSortQuestions(str, Enum):
@@ -25,7 +26,8 @@ def create():
     if form_create_question.validate_on_submit():
         try:
             question = Questions(header=form_create_question.header.data, description=form_create_question.description.data,
-                                 category=form_create_question.category.data, account_id=current_user.id)
+                                 category=form_create_question.category.data, create_time=arrow.now('Europe/Moscow').datetime,
+                                 account_id=current_user.id)
             db.session.add(question)
             db.session.commit()
             return redirect(url_for('account.account_user', nickname=current_user.account.nickname))
@@ -95,8 +97,8 @@ def about_question(id_question):
     form_create_answer = CreateAnswerForm()
     if form_create_answer.validate_on_submit():
         try:
-            answer = Answers(text=form_create_answer.answer.data, questions_id=question.id,
-                             account_id=current_user.id)
+            answer = Answers(text=form_create_answer.answer.data, create_time=arrow.now('Europe/Moscow').datetime,
+                             questions_id=question.id, account_id=current_user.id)
             db.session.add(answer)
             db.session.commit()
             flash(message='Ответ создан', category='success')
