@@ -33,7 +33,7 @@
                              <div class="col-12 author">
                                  <div class="row">
                                      <div class="col-auto">
-                                         <img src="{{ avatars.gravatar(question.account.user.hash_gmail()) }}">
+                                         <img src="{{ avatars.gravatar(question.account.user.hash_email()) }}">
                                      </div>
                                      <div class="col">
                                          <a href="{{ url_for('account.account_user', nickname=question.account.nickname) }}">{{ question.account.nickname }}</a>
@@ -79,7 +79,7 @@
                          <div class="col-12 shadow p-3 section">
                              <div class="row">
                                  <div class="col-sm-auto col-12 avatar">
-                                     <img src="{{ avatars.gravatar(review.account.user.hash_gmail()) }}">
+                                     <img src="{{ avatars.gravatar(review.account.user.hash_email()) }}">
                                  </div>
                                  <div class="col">
                                      <div class="row">
@@ -119,7 +119,7 @@
                                <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                    <div class="card">
                                        <div class="card-header">
-                                           <img src="{{ avatars.gravatar(user.user.hash_gmail()) }}">
+                                           <img src="{{ avatars.gravatar(user.user.hash_email()) }}">
                                        </div>
                                       <div class="card-body">
                                           <div class="row">

@@ -9,14 +9,14 @@ class User(db.Model, UserMixin):
     __tablename__ = 'user'
 
     id = db.Column(INTEGER, primary_key=True)
-    gmail = db.Column(VARCHAR, nullable=False, unique=True)
+    email = db.Column(VARCHAR, nullable=False, unique=True)
     is_reset_password = db.Column(BOOLEAN, nullable=False, default=False)
     password = db.Column(VARCHAR, nullable=False)
     account = db.relationship('Account', backref=db.backref('user'), uselist=False)
     role = db.relationship('Role', backref=db.backref('user'), uselist=False)
 
-    def hash_gmail(self):
-        return hashlib.md5(self.gmail.lower().encode('utf-8')).hexdigest()
+    def hash_email(self):
+        return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
 
     def __repr__(self):
         return f'{self.id}'

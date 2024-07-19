@@ -3,14 +3,15 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Valid
 from wtforms.validators import DataRequired, Length, EqualTo
 from app.manage import db
 from app.main.models import Account, User
+from validate_email import validate_email
 
 
-def validate_gmail(form, gmail):
-    user = db.session.query(User).filter_by(gmail=gmail.data).first()
+def validate_email_field(form, email):
+    user = db.session.query(User).filter_by(email=email.data).first()
     if user:
-        raise ValidationError(message='Такой Gmail есть')
-    if gmail.data[-10:] != '@gmail.com':
-        raise ValidationError(message='Gmail неверно введен')
+        raise ValidationError(message='Такой Email есть')
+    if validate_email(email.data) is False:
+        raise ValidationError(message='Email неверно введен')
 
 
 def validate_nickname(form, nickname):
@@ -20,14 +21,14 @@ def validate_nickname(form, nickname):
 
 
 class EntranceForm(FlaskForm):
-    gmail = EmailField(label='Gmail', validators=[DataRequired(), Length(max=100)])
+    email = EmailField(label='Email', validators=[DataRequired(), Length(max=100)])
     password = PasswordField(label='Пароль', validators=[DataRequired(), Length(max=100)])
     remember = BooleanField(label='Запомнить меня')
     submit = SubmitField(label='Войти')
 
 
 class RegistrationForm(FlaskForm):
-    gmail = EmailField(label='Gmail', validators=[DataRequired(), Length(min=6, max=100), validate_gmail])
+    email = EmailField(label='Email', validators=[DataRequired(), Length(min=6, max=100), validate_email_field])
     nickname = StringField(label='Никнейм', validators=[DataRequired(), Length(min=3, max=15), validate_nickname])
     password = PasswordField(label='Пароль', validators=[DataRequired(), Length(min=8, max=100)])
     repeat_password = PasswordField(label='Повторить пароль', validators=[DataRequired(),
@@ -38,7 +39,7 @@ class RegistrationForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
-    gmail = EmailField(label='Gmail', validators=[DataRequired(), Length(max=100)])
+    email = EmailField(label='Email', validators=[DataRequired(), Length(max=100)])
     recaptcha = RecaptchaField()
     submit = SubmitField(label='Отправить')
 

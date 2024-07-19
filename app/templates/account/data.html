@@ -11,10 +11,10 @@
                   <div class="row">
                       {% if user.id == current_user.id %}
                           <div class="col-12">
-                              <span>Gmail</span>
+                              <span>Email</span>
                           </div>
                           <div class="col-12">
-                              <input class="form-control" type="email" value="{{ current_user.gmail }}" readonly>
+                              <input class="form-control" type="email" value="{{ current_user.email }}" readonly>
                           </div>
                       {% endif %}
                       <div class="col-12">

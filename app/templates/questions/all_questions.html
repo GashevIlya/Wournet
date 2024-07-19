@@ -21,7 +21,7 @@
                      <div class="col-12 author">
                          <div class="row">
                              <div class="col-auto">
-                                 <img src="{{ avatars.gravatar(question.account.user.hash_gmail()) }}">
+                                 <img src="{{ avatars.gravatar(question.account.user.hash_email()) }}">
                              </div>
                              <div class="col">
                                  <a href="{{ url_for('account.account_user', nickname=question.account.nickname) }}">{{ question.account.nickname }}</a>

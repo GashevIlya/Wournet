@@ -14,7 +14,7 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="avatar col">
-                                    <img src="{{ avatars.gravatar(user.user.hash_gmail()) }}">
+                                    <img src="{{ avatars.gravatar(user.user.hash_email()) }}">
                                 </div>
                                 {% if user.id == current_user.id %}
                                     <div class="col text-end">

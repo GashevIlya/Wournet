@@ -16,26 +16,26 @@ def load_user(user_id):
     return db.session.query(User).get(user_id)
 
 
-def generate_token(gmail):
+def generate_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-    return serializer.dumps(gmail, salt=app.config['SECURITY_PASSWORD_SALT'])
+    return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
 
 
 def confirm_token(token, exception=3600):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
-        gmail = serializer.loads(
+        email = serializer.loads(
             token,
             salt=app.config['SECURITY_PASSWORD_SALT'],
             max_age=exception
         )
     except Exception:
         return False
-    return gmail
+    return email
 
 
-def create_user(gmail, password, nickname, role='user'):
-    user = User(gmail=gmail, password=generate_password_hash(password).decode('utf8'))
+def create_user(email, password, nickname, role='user'):
+    user = User(email=email, password=generate_password_hash(password).decode('utf8'))
     db.session.add(user)
     db.session.flush()
     role_user = Role(id=user.id, name=role)
@@ -61,11 +61,11 @@ def check_authenticated_user(func):
 def entrance():
     form_entrance = EntranceForm()
     if form_entrance.validate_on_submit():
-        user = db.session.query(User).filter_by(gmail=form_entrance.gmail.data).first()
+        user = db.session.query(User).filter_by(email=form_entrance.email.data).first()
         if user and check_password_hash(user.password, form_entrance.password.data):
             login_user(user, remember=form_entrance.remember.data)
             return redirect(url_for('account.account_user', nickname=user.account.nickname))
-        flash(message='Неверный Gmail или пароль')
+        flash(message='Неверный Email или пароль')
     return render_template('auth/entrance.html', form_entrance=form_entrance)
 
 
@@ -75,7 +75,7 @@ def registration():
     form_registration = RegistrationForm()
     if form_registration.validate_on_submit():
         try:
-            create_user(gmail=form_registration.gmail.data, password=form_registration.password.data,
+            create_user(email=form_registration.email.data, password=form_registration.password.data,
                         nickname=form_registration.nickname.data)
             return redirect(url_for('auth.entrance'))
         except Exception:
@@ -91,21 +91,21 @@ def logout():
     return redirect(url_for('auth.entrance'))
 
 
-def send_async_gmail(msg):
+def send_async_email(msg):
     with app.app_context():
         mail.send(msg)
 
 
-def send_gmail(gmail, token):
+def send_email(email, token):
     subject = 'Восстановление аккаунта'
     body = f'<p>Здравствуйте,</p><p>Мы получили запрос на сброс пароля для вашего аккаунта. ' \
            'Если вы не запрашивали сброс пароля, пожалуйста, проигнорируйте это сообщение.</p>' \
-           f'<p>Для сброса пароля пройдите по ссылке ниже:</p><p>http://127.0.0.1:5000/auth/change/password/{token}</p>' \
+           f'<p>Для сброса пароля пройдите по ссылке ниже:</p><p>https://wournet.onrender.com/auth/change/password/{token}</p>' \
            '<p>Если ссылка не работает, скопируйте и вставьте ее в адресную строку браузера.</p>' \
            '<p>С уважением, Команда поддержки.</p>'
-    msg = Message(subject, recipients=[gmail])
+    msg = Message(subject, recipients=[email])
     msg.html = body
-    Thread(target=send_async_gmail, args=(msg, )).start()
+    Thread(target=send_async_email, args=(msg, )).start()
 
 
 @auth.route('/reset/password', methods=['GET', 'POST'])
@@ -113,28 +113,28 @@ def send_gmail(gmail, token):
 def reset_password():
     form_reset_password = ResetPasswordForm()
     if form_reset_password.validate_on_submit():
-        user = db.session.query(User).filter_by(gmail=form_reset_password.gmail.data).first()
+        user = db.session.query(User).filter_by(email=form_reset_password.email.data).first()
         if user:
             try:
                 user.is_reset_password = True
                 db.session.commit()
-                token = generate_token(gmail=user.gmail)
-                send_gmail(gmail=user.gmail, token=token)
+                token = generate_token(email=user.email)
+                send_email(email=user.email, token=token)
                 flash(message='Письмо отправлено', category='success')
             except Exception:
                 db.session.rollback()
                 flash(message='Письмо не отправлено', category='danger')
         else:
-            flash(message='Такого Gmail нет', category='danger')
+            flash(message='Такого Email нет', category='danger')
     return render_template('auth/reset_password.html', form_reset_password=form_reset_password)
 
 
 @auth.route('/change/password/<token>', methods=['GET', 'POST'])
 @check_authenticated_user
 def change_password(token):
-    gmail = confirm_token(token=token)
-    if gmail is not False:
-        user = db.session.query(User).filter_by(gmail=gmail).first()
+    email = confirm_token(token=token)
+    if email is not False:
+        user = db.session.query(User).filter_by(email=email).first()
         if user.is_reset_password is True:
             form_change_password = ChangePasswordForm()
             if form_change_password.validate_on_submit():
