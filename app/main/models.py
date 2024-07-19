@@ -95,7 +95,7 @@ class Reviews(db.Model):
 
     id = db.Column(INTEGER, primary_key=True)
     text = db.Column(VARCHAR, nullable=False)
-    create_time = db.Column(TIMESTAMP, nullable=False, default=arrow.now('Europe/Moscow').datetime)
+    create_time = db.Column(TIMESTAMP(timezone=True), nullable=False, default=arrow.now('Europe/Moscow').datetime)
     account_id = db.Column(INTEGER, db.ForeignKey('account.id'))
 
     def format_create_time(self):
@@ -111,7 +111,7 @@ class Questions(db.Model):
     id = db.Column(INTEGER, primary_key=True)
     header = db.Column(VARCHAR, nullable=False, unique=True)
     description = db.Column(VARCHAR, nullable=True)
-    create_time = db.Column(TIMESTAMP, nullable=False, default=arrow.now('Europe/Moscow').datetime)
+    create_time = db.Column(TIMESTAMP(timezone=True), nullable=False, default=arrow.now('Europe/Moscow').datetime)
     views_count = db.Column(INTEGER, nullable=False, default=0)
     category = db.Column(VARCHAR, nullable=False)
     account_id = db.Column(INTEGER, db.ForeignKey('account.id'))
@@ -150,7 +150,7 @@ class Answers(db.Model):
 
     id = db.Column(INTEGER, primary_key=True)
     text = db.Column(VARCHAR, nullable=False)
-    create_time = db.Column(TIMESTAMP, nullable=False, default=arrow.now('Europe/Moscow').datetime)
+    create_time = db.Column(TIMESTAMP(timezone=True), nullable=False, default=arrow.now('Europe/Moscow').datetime)
     questions_id = db.Column(INTEGER, db.ForeignKey('questions.id'))
     account_id = db.Column(INTEGER, db.ForeignKey('account.id'))
 
