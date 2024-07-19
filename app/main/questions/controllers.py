@@ -119,7 +119,7 @@ def answers(id_question):
 @login_required
 def random_questions(id_question):
     question = db.session.query(Questions).filter_by(id=id_question).first_or_404()
-    rnd_questions = db.session.query(Questions).filter(Questions.id != question.id).order_by(func.random()).limit(5)
+    rnd_questions = db.session.query(Questions).filter(Questions.id != question.id).order_by(func.random()).limit(5).all()
     return render_template('questions/random_questions.html', rnd_questions=rnd_questions)
 
 

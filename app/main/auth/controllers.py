@@ -1,4 +1,4 @@
-from app.manage import app, login_manager, db, mail, celery
+from app.manage import app, login_manager, db, mail
 from flask import render_template, redirect, url_for, flash
 from app.main.models import Account, Role, User, Gender, Location
 from flask_login import logout_user, login_required, login_user, current_user
@@ -8,6 +8,7 @@ from functools import wraps
 from flask_mail import Message
 from itsdangerous import URLSafeTimedSerializer
 from app.main.auth.__init__ import auth
+from threading import Thread
 
 
 @login_manager.user_loader
@@ -34,7 +35,7 @@ def confirm_token(token, exception=3600):
 
 
 def create_user(gmail, password, nickname, role='user'):
-    user = User(gmail=gmail, password=generate_password_hash(password))
+    user = User(gmail=gmail, password=generate_password_hash(password).decode('utf8'))
     db.session.add(user)
     db.session.flush()
     role_user = Role(id=user.id, name=role)
@@ -90,7 +91,11 @@ def logout():
     return redirect(url_for('auth.entrance'))
 
 
-@celery.task
+def send_async_gmail(msg):
+    with app.app_context():
+        mail.send(msg)
+
+
 def send_gmail(gmail, token):
     subject = 'Восстановление аккаунта'
     body = f'<p>Здравствуйте,</p><p>Мы получили запрос на сброс пароля для вашего аккаунта. ' \
@@ -98,10 +103,9 @@ def send_gmail(gmail, token):
            f'<p>Для сброса пароля пройдите по ссылке ниже:</p><p>http://127.0.0.1:5000/auth/change/password/{token}</p>' \
            '<p>Если ссылка не работает, скопируйте и вставьте ее в адресную строку браузера.</p>' \
            '<p>С уважением, Команда поддержки.</p>'
-    with app.app_context():
-        msg = Message(subject, recipients=[gmail])
-        msg.html = body
-        mail.send(msg)
+    msg = Message(subject, recipients=[gmail])
+    msg.html = body
+    Thread(target=send_async_gmail, args=(msg, )).start()
 
 
 @auth.route('/reset/password', methods=['GET', 'POST'])
@@ -115,7 +119,7 @@ def reset_password():
                 user.is_reset_password = True
                 db.session.commit()
                 token = generate_token(gmail=user.gmail)
-                send_gmail.delay(gmail=user.gmail, token=token)
+                send_gmail(gmail=user.gmail, token=token)
                 flash(message='Письмо отправлено', category='success')
             except Exception:
                 db.session.rollback()
@@ -134,7 +138,7 @@ def change_password(token):
         if user.is_reset_password is True:
             form_change_password = ChangePasswordForm()
             if form_change_password.validate_on_submit():
-                hash_password = generate_password_hash(form_change_password.password.data)
+                hash_password = generate_password_hash(form_change_password.password.data).decode('utf8')
                 try:
                     user.password = hash_password
                     user.is_reset_password = False

@@ -11,7 +11,6 @@ from flask_admin import AdminIndexView
 from flask_caching import Cache
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from celery import Celery
 from flask_sslify import SSLify
 
 
@@ -44,7 +43,6 @@ ckeditor = CKEditor(app)
 admin = Admin(app, name='Админка', template_mode='bootstrap4', index_view=MyAdminINdexView())
 cache = Cache(app)
 limiter = Limiter(get_remote_address, app=app, default_limits=['2 per second'], strategy="fixed-window")
-celery = Celery('tasks', broker=app.config['REDIS_BROKER'], include='app.main.auth.__init__')
 sslify = SSLify(app)
 
 
