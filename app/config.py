@@ -4,6 +4,7 @@ import os
 class Config:
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_ENGINE_OPTIONS = {'connect_args': {'options': '-c timezone=Europe/Moscow'}}
     SECRET_KEY = os.environ.get('SECRET_KEY')
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
