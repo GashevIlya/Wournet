@@ -3,15 +3,12 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Valid
 from wtforms.validators import DataRequired, Length, EqualTo
 from app.manage import db
 from app.main.models import Account, User
-from validate_email import validate_email
 
 
-def validate_email_field(form, email):
+def validate_email(form, email):
     user = db.session.query(User).filter_by(email=email.data).first()
     if user:
         raise ValidationError(message='Такой Email есть')
-    if validate_email(email.data) is False:
-        raise ValidationError(message='Email неверно введен')
 
 
 def validate_nickname(form, nickname):
@@ -28,7 +25,7 @@ class EntranceForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
-    email = EmailField(label='Email', validators=[DataRequired(), Length(min=6, max=100), validate_email_field])
+    email = EmailField(label='Email', validators=[DataRequired(), Length(min=6, max=100), validate_email])
     nickname = StringField(label='Никнейм', validators=[DataRequired(), Length(min=3, max=15), validate_nickname])
     password = PasswordField(label='Пароль', validators=[DataRequired(), Length(min=8, max=100)])
     repeat_password = PasswordField(label='Повторить пароль', validators=[DataRequired(),
