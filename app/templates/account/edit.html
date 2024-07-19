@@ -93,7 +93,7 @@
                             {{ form_edit_account.city.label }}
                         </div>
                         <div class="col-12">
-                             {% if current_user.account.city %}
+                             {% if current_user.account.location.city %}
                                 {{ form_edit_account.city(class="form-control", value=current_user.account.location.city) }}
                             {% else %}
                                 {{ form_edit_account.city(class="form-control") }}
@@ -103,7 +103,7 @@
                             {{ form_edit_account.region.label }}
                         </div>
                         <div class="col-12">
-                             {% if current_user.account.region %}
+                             {% if current_user.account.location.region %}
                                 {{ form_edit_account.region(class="form-control", value=current_user.account.location.region) }}
                             {% else %}
                                 {{ form_edit_account.region(class="form-control") }}
@@ -113,7 +113,7 @@
                             {{ form_edit_account.country.label }}
                         </div>
                         <div class="col-12">
-                             {% if current_user.account.country %}
+                             {% if current_user.account.location.country %}
                                 {{ form_edit_account.country(class="form-control", value=current_user.account.location.country) }}
                             {% else %}
                                 {{ form_edit_account.country(class="form-control") }}
