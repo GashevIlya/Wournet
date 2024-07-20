@@ -92,6 +92,8 @@ def all_questions():
 @login_required
 def about_question(id_question):
     question = db.session.query(Questions).filter_by(id=id_question).first_or_404()
+    question.views_count += 1
+    db.session.commit()
     form_create_answer = CreateAnswerForm()
     if form_create_answer.validate_on_submit():
         try:
