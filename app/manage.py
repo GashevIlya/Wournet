@@ -42,7 +42,7 @@ cg = CoinGeckoAPI()
 ckeditor = CKEditor(app)
 admin = Admin(app, name='Админка', template_mode='bootstrap4', index_view=MyAdminINdexView())
 cache = Cache(app)
-limiter = Limiter(get_remote_address, app=app, default_limits=['2 per second'], strategy="fixed-window")
+limiter = Limiter(get_remote_address, app=app, default_limits=['1 per second'], strategy="fixed-window")
 sslify = SSLify(app)
 
 
