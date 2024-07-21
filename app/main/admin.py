@@ -22,20 +22,10 @@ class MainModelView(BaseModelView):
 
 class UserModel(MainModelView):
     column_display_pk = True
-    form_widget_args = {
-        'id': {
-            'readonly': True
-        }
-    }
 
 
 class RoleModel(MainModelView):
     column_list = ('id', 'name')
-    form_widget_args = {
-        'id': {
-            'readonly': True
-        }
-    }
 
 
 admin.add_view(UserModel(User, db.session))
