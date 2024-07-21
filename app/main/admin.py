@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask import redirect, url_for
 
 
-class MyModelView(ModelView):
+class BaseModelView(ModelView):
     can_create = False
 
     def is_accessible(self):
@@ -16,17 +16,33 @@ class MyModelView(ModelView):
         return redirect(url_for('auth.entrance'))
 
 
-class MainModel(MyModelView):
+class MainModelView(BaseModelView):
     can_delete = False
+
+
+class UserModel(MainModelView):
     column_display_pk = True
-    column_auto_select_related = True
+    form_widget_args = {
+        'id': {
+            'readonly': True
+        }
+    }
 
 
-admin.add_view(MainModel(User, db.session))
-admin.add_view(MainModel(Role, db.session))
-admin.add_view(MainModel(Account, db.session, endpoint='account_'))
-admin.add_view(MainModel(Gender, db.session))
-admin.add_view(MainModel(Location, db.session))
-admin.add_view(MyModelView(Reviews, db.session, endpoint='reviews_'))
-admin.add_view(MyModelView(Questions, db.session, endpoint='questions_'))
-admin.add_view(MyModelView(Answers, db.session))
+class RoleModel(MainModelView):
+    column_list = ('id', 'name')
+    form_widget_args = {
+        'id': {
+            'readonly': True
+        }
+    }
+
+
+admin.add_view(UserModel(User, db.session))
+admin.add_view(RoleModel(Role, db.session))
+admin.add_view(MainModelView(Account, db.session, endpoint='account_'))
+admin.add_view(MainModelView(Gender, db.session))
+admin.add_view(MainModelView(Location, db.session))
+admin.add_view(BaseModelView(Reviews, db.session, endpoint='reviews_'))
+admin.add_view(BaseModelView(Questions, db.session, endpoint='questions_'))
+admin.add_view(BaseModelView(Answers, db.session))
