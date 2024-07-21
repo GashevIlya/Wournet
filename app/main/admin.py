@@ -18,6 +18,7 @@ class MyModelView(ModelView):
 
 class MainModel(MyModelView):
     can_delete = False
+    column_display_pk = True
 
 
 admin.add_view(MainModel(User, db.session))

@@ -88,10 +88,19 @@ def all_questions():
     return render_template('questions/all_questions.html', questions=questions, sort=sort)
 
 
+def add_view_question(question):
+    try:
+        question.views_count += 1
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+
+
 @questions.route('/questions/<int:id_question>', methods=['GET', 'POST'])
 @login_required
 def about_question(id_question):
     question = db.session.query(Questions).filter_by(id=id_question).first_or_404()
+    add_view_question(question)
     form_create_answer = CreateAnswerForm()
     if form_create_answer.validate_on_submit():
         try:
