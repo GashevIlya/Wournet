@@ -55,7 +55,6 @@ def check_authenticated_user(func):
     return wrapper
 
 
-@app.route('/', methods=['GET', 'POST'])
 @auth.route('/entrance', methods=['GET', 'POST'])
 @check_authenticated_user
 def entrance():

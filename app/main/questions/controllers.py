@@ -2,7 +2,7 @@ from app.main.questions.__init__ import questions
 from flask_login import login_required, current_user
 from app.main.questions.forms import CreateQuestionForm, EditQuestionForm, CreateAnswerForm
 from flask import render_template, flash, redirect, url_for, request
-from app.manage import db
+from app.manage import db, app
 from app.main.models import Questions, Answers
 from sqlalchemy import func
 from enum import Enum
@@ -70,6 +70,7 @@ def delete_question(id_question):
     return ''
 
 
+@app.route('/')
 @questions.route('/questions/all')
 def all_questions():
     page = request.args.get('page', type=int, default=1)
