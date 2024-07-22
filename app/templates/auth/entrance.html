@@ -37,6 +37,7 @@
         <p>{{ form_entrance.submit(class="btn bg-primary text-white w-100") }}</p>
     </form>
     <p class="change-password"><a href="{{ url_for('auth.reset_password') }}">Забыли пароль?</a></p>
+    <h6 class="text-center mt-3">Нет аккаунта? - <a href="{{ url_for('auth.registration') }}">Зарегистрируйтесь</a></h6>
 {% endblock %}
 
 

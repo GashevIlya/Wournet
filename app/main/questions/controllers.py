@@ -71,7 +71,6 @@ def delete_question(id_question):
 
 
 @questions.route('/questions/all')
-@login_required
 def all_questions():
     page = request.args.get('page', type=int, default=1)
     sort = request.args.get('sort', type=TypeSortQuestions, default='popular')
@@ -97,12 +96,11 @@ def add_view_question(question):
 
 
 @questions.route('/questions/<int:id_question>', methods=['GET', 'POST'])
-@login_required
 def about_question(id_question):
     question = db.session.query(Questions).filter_by(id=id_question).first_or_404()
     add_view_question(question)
     form_create_answer = CreateAnswerForm()
-    if form_create_answer.validate_on_submit():
+    if current_user.is_authenticated and form_create_answer.validate_on_submit():
         try:
             answer = Answers(text=form_create_answer.answer.data, questions_id=question.id,
                              account_id=current_user.id)
@@ -116,7 +114,6 @@ def about_question(id_question):
 
 
 @questions.route('/questions/<int:id_question>/answers')
-@login_required
 def answers(id_question):
     page = request.args.get('page', type=int, default=1)
     question = db.session.query(Questions).filter_by(id=id_question).first_or_404()
@@ -125,7 +122,6 @@ def answers(id_question):
 
 
 @questions.route('/questions/<int:id_question>/random')
-@login_required
 def random_questions(id_question):
     question = db.session.query(Questions).filter_by(id=id_question).first_or_404()
     rnd_questions = db.session.query(Questions).filter(Questions.id != question.id).order_by(func.random()).limit(5).all()

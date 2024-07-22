@@ -16,7 +16,7 @@
                                 <div class="avatar col">
                                     <img src="{{ avatars.gravatar(user.user.hash_email()) }}">
                                 </div>
-                                {% if user.id == current_user.id %}
+                                {% if current_user.is_authenticated and user.id == current_user.id %}
                                     <div class="col text-end">
                                         <button class="btn bg-primary text-white" onclick="document.location.href='{{ url_for('account.edit') }}'">
                                             <img src="{{ url_for('static', filename='images/account/edit.png') }}">

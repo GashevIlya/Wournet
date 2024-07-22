@@ -9,7 +9,7 @@
             <div id="personal-data" class="accordion-collapse collapse show">
               <div class="accordion-body">
                   <div class="row">
-                      {% if user.id == current_user.id %}
+                      {% if current_user.is_authenticated and user.id == current_user.id %}
                           <div class="col-12">
                               <span>Email</span>
                           </div>

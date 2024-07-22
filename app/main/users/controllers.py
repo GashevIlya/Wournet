@@ -1,5 +1,4 @@
 from flask import render_template, request
-from flask_login import login_required
 from app.main.models import Account, Reviews, Answers, Questions
 from app.manage import db
 from sqlalchemy import func
@@ -7,7 +6,6 @@ from app.main.users.__init__ import users
 
 
 @users.route('/all')
-@login_required
 def all_users():
     page = request.args.get('page', type=int, default=1)
     users = db.session.query(Account).outerjoin(Reviews, Account.id == Reviews.account_id).\

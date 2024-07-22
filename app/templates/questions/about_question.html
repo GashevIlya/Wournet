@@ -67,35 +67,37 @@
          </div>
      </div>
  </div>
- <div class="col-12 section">
-     <form method="post">
-         {% for field, error in form_create_answer.errors.items() %}
-             <p><div class="alert alert-danger alert-dismissible fade show">
-                 {% if field == 'recaptcha' %}
-                     Неверно выполнена recaptcha
-                 {% else %}
-                     {{ ', '.join(error) }}
-                 {% endif %}
-                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-             </div></p>
-         {% endfor %}
-         {% for cat, msg in get_flashed_messages(True) %}
-            <p><div class="alert alert-{{ cat }} alert-dismissible fade show">
-                 {{ msg }}
-                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div></p>
-        {% endfor %}
-         {{ form_create_answer.hidden_tag() }}
-         <p>
-             {{ form_create_answer.answer.label }}
-             <img src="{{ url_for('static', filename='images/base/required_input.png') }}" class="required_input">
-         </p>
-         <p><span class="form-text">Длина должна быть от 5 до 3000</span></p>
-         <p>{{ form_create_answer.answer() }}</p>
-         <p>{{ form_create_answer.recaptcha() }}</p>
-         <p>{{ form_create_answer.submit(class="btn bg-primary text-white") }}</p>
-     </form>
- </div>
+    {% if current_user.is_authenticated %}
+         <div class="col-12 section">
+             <form method="post">
+                 {% for field, error in form_create_answer.errors.items() %}
+                     <p><div class="alert alert-danger alert-dismissible fade show">
+                         {% if field == 'recaptcha' %}
+                             Неверно выполнена recaptcha
+                         {% else %}
+                             {{ ', '.join(error) }}
+                         {% endif %}
+                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                     </div></p>
+                 {% endfor %}
+                 {% for cat, msg in get_flashed_messages(True) %}
+                    <p><div class="alert alert-{{ cat }} alert-dismissible fade show">
+                         {{ msg }}
+                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div></p>
+                {% endfor %}
+                 {{ form_create_answer.hidden_tag() }}
+                 <p>
+                     {{ form_create_answer.answer.label }}
+                     <img src="{{ url_for('static', filename='images/base/required_input.png') }}" class="required_input">
+                 </p>
+                 <p><span class="form-text">Длина должна быть от 5 до 3000</span></p>
+                 <p>{{ form_create_answer.answer() }}</p>
+                 <p>{{ form_create_answer.recaptcha() }}</p>
+                 <p>{{ form_create_answer.submit(class="btn bg-primary text-white") }}</p>
+             </form>
+         </div>
+    {% endif %}
  <div class="col-12 section">
      <span class="header">Другие вопросы</span>
  </div>

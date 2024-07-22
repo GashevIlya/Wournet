@@ -23,7 +23,6 @@ def create():
 
 
 @reviews.route('/reviews/all')
-@login_required
 def all_reviews():
     page = request.args.get('page', type=int, default=1)
     reviews_users = db.session.query(Reviews).order_by(Reviews.create_time.desc()).\

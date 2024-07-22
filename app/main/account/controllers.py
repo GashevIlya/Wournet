@@ -9,21 +9,18 @@ from app.main.account.__init__ import account
 
 
 @account.route('/<string:nickname>')
-@login_required
 def account_user(nickname):
     user = db.session.query(Account).filter_by(nickname=nickname).first_or_404()
     return render_template('account/account.html', user=user)
 
 
 @account.route('/<string:nickname>/data')
-@login_required
 def data(nickname):
     user = db.session.query(Account).filter_by(nickname=nickname).first_or_404()
     return render_template('account/data.html', user=user)
 
 
 @account.route('/<string:nickname>/questions')
-@login_required
 def questions(nickname):
     user = db.session.query(Account).filter_by(nickname=nickname).first_or_404()
     page = request.args.get('page', type=int, default=1)
@@ -33,7 +30,6 @@ def questions(nickname):
 
 
 @account.route('/<string:nickname>/reviews')
-@login_required
 def reviews(nickname):
     page = request.args.get('page', type=int, default=1)
     user = db.session.query(Account).filter_by(nickname=nickname).first_or_404()
@@ -43,14 +39,12 @@ def reviews(nickname):
 
 
 @account.route('/<string:nickname>/information')
-@login_required
 def information(nickname):
     user = db.session.query(Account).filter_by(nickname=nickname).first_or_404()
     return render_template('account/information.html', user=user)
 
 
 @account.route('/currency/rate')
-@login_required
 @cache.cached(timeout=3600)
 def currency_rate():
     rates = ExchangeRates(str(arrow.now('Europe/Moscow').date()))
@@ -59,7 +53,6 @@ def currency_rate():
 
 
 @account.route('/cryptocurrency/rate')
-@login_required
 @cache.cached(timeout=3600)
 def cryptocurrency_rate():
     cryptocurrency_bitcoin = cg.get_price(ids='bitcoin', vs_currencies='rub')

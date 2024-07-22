@@ -17,9 +17,11 @@
                                         <div class="col nickname">
                                             <a href="{{ url_for('account.account_user', nickname=answer.account.nickname) }}">{{ answer.account.nickname }}</a>
                                         </div>
-                                        <div class="col-auto">
-                                            <button class="btn btn-sm btn-outline-danger" hx-delete="{{ url_for('questions.delete_answer', id_answer=answer.id) }}" hx-target="#answer{{ answer.id }} "  hx-swap="outerHTML" hx-confirm="Вы точно хотите удалить ответ?">Удалить</button>
-                                        </div>
+                                        {% if current_user.is_authenticated and answer.account_id == current_user.id %}
+                                            <div class="col-auto">
+                                                <button class="btn btn-sm btn-outline-danger" hx-delete="{{ url_for('questions.delete_answer', id_answer=answer.id) }}" hx-target="#answer{{ answer.id }} "  hx-swap="outerHTML" hx-confirm="Вы точно хотите удалить ответ?">Удалить</button>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-12">

@@ -10,7 +10,7 @@
                         <div class="col create-time">
                             <span>{{ review.format_create_time() }}</span>
                         </div>
-                        {% if user.id == current_user.id %}
+                        {% if current_user.is_authenticated and user.id == current_user.id %}
                             <div class="col-auto">
                                 <button type="button" class="btn btn-sm btn-outline-primary" onclick="document.location.href='{{ url_for('reviews.edit', id_review=review.id) }}'">Редактировать</button>
                             </div>
@@ -34,7 +34,7 @@
 {% else %}
     <div class="col-12 text-center">
        <h6>
-           {% if user.id == current_user.id %}
+           {% if current_user.is_authenticated and user.id == current_user.id %}
                У вас нет отзывов
            {% else %}
                У пользователя нет отзывов

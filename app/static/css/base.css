@@ -91,11 +91,8 @@ article.container-fluid {
     a.navbar-brand {
         font-size: 17px;
     }
-    button.entrance, button.registration {
-        font-size: small;
-    }
     button.entrance {
-        margin-right: -15px;
+        font-size: small;
     }
     button.icon-menu img {
         width: 16px;

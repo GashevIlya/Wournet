@@ -1,5 +1,4 @@
 from app.main.search.__init__ import search
-from flask_login import login_required
 from flask import request, render_template, url_for, redirect
 from app.main.models import Questions, Account, Reviews
 from app.manage import db
@@ -17,7 +16,6 @@ class TypeParams(str, Enum):
 
 
 @search.route('/')
-@login_required
 def search_results():
     q = request.args.get('q', type=str)
     page = request.args.get('page', type=int, default=1)
