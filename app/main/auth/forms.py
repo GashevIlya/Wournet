@@ -12,7 +12,7 @@ def validate_email(form, email):
 
 
 def validate_nickname(form, nickname):
-    user = db.session.query(Account).filter_by(nickname=nickname.data).first()
+    user = db.session.query(Account).filter_by(nickname=nickname.data.replace(' ', '').lower()).first()
     if user:
         raise ValidationError(message='Такой никнейм есть')
 

@@ -69,12 +69,12 @@
  </div>
  <div class="col-12 section">
      <form method="post">
-         {% for field, errors in form_create_answer.errors.items() %}
+         {% for field, error in form_create_answer.errors.items() %}
              <p><div class="alert alert-danger alert-dismissible fade show">
                  {% if field == 'recaptcha' %}
                      Неверно выполнена recaptcha
                  {% else %}
-                     {{ ', '.join(errors) }}
+                     {{ ', '.join(error) }}
                  {% endif %}
                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
              </div></p>

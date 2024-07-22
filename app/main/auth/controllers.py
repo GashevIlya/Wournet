@@ -76,7 +76,7 @@ def registration():
     if form_registration.validate_on_submit():
         try:
             create_user(email=form_registration.email.data, password=form_registration.password.data,
-                        nickname=form_registration.nickname.data)
+                        nickname=form_registration.nickname.data.replace(' ', '').lower())
             return redirect(url_for('auth.entrance'))
         except Exception:
             db.session.rollback()

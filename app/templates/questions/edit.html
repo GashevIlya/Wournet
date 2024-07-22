@@ -6,12 +6,12 @@
        <div class="col-12 section">
             <form method="post">
                 {{ form_edit_question.hidden_tag() }}
-                 {% for field, errors in form_edit_question.errors.items() %}
+                 {% for field, error in form_edit_question.errors.items() %}
                      <p><div class="alert alert-danger alert-dismissible fade show">
                          {% if field == 'recaptcha' %}
                              Неверно выполнена recaptcha
                          {% else %}
-                             {{ ', '.join(errors) }}
+                             {{ ', '.join(error) }}
                          {% endif %}
                          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                      </div></p>

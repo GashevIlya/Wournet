@@ -76,7 +76,7 @@ def edit():
     user = current_user.account
     if form_edit_account.validate_on_submit():
         try:
-            user.nickname = form_edit_account.nickname.data
+            user.nickname = form_edit_account.nickname.data.replace(' ', '').lower()
             user.surname = form_edit_account.surname.data
             user.name = form_edit_account.name.data
             user.date_of_birth = form_edit_account.date_of_birth.data
