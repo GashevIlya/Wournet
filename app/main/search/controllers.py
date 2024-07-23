@@ -28,7 +28,7 @@ def search_results():
         else:
             query = db.session.query(Account).filter(or_(Account.nickname.contains(q), Account.surname.contains(q),
                                                          Account.name.contains(q)))
-        query = query.paginate(page=page, per_page=15, error_out=False)
+        query = query.paginate(page=page, per_page=15, error_out=True)
         return render_template('search/search_results.html', q=q, query=query, p=p)
     return redirect(url_for('questions.all_questions'))
 

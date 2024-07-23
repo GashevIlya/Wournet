@@ -84,7 +84,7 @@ def all_questions():
         sort_questions = db.session.query(Questions).order_by(Questions.create_time.desc())
     else:
         sort_questions = db.session.query(Questions).order_by(Questions.create_time.asc())
-    questions = sort_questions.paginate(page=page, per_page=15, error_out=False)
+    questions = sort_questions.paginate(page=page, per_page=15, error_out=True)
     return render_template('questions/all_questions.html', questions=questions, sort=sort)
 
 
