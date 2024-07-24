@@ -21,13 +21,8 @@
                     </div>
                 </div>
                  <div class="col-12 text">
-                     <div id="collapse-{{ review.id }}">{{ review.text }}</div>
+                     {{ review.text }}
                  </div>
-                 {% if review.text|length > 300 %}
-                     <div class="col-12">
-                         <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover expand-text" data-collapse-id="{{ review.id }}">Развернуть</a>
-                     </div>
-                 {% endif %}
             </div>
         </div>
     {% endfor %}

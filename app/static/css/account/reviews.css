@@ -2,24 +2,20 @@
     padding: 15px;
     border-bottom: 1px dashed rgb(13, 110, 253);
 }
-.review div.text div {
-    overflow: hidden;
+.review div.text {
     word-break: break-word;
-    max-height: 150px;
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
     font-size: 16px;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
-}
-.expand-text {
-    font-size: 15px;
-    cursor: pointer;
+    margin-top: 5px;
 }
 .review .create-time {
     font-size: 15px;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bolder;
 }
-.review .text {
-    margin-top: 5px;
-}
+
 

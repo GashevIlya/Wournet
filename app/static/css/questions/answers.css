@@ -28,11 +28,7 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     word-break: break-word;
     margin-top: 15px;
-    max-height: 150px;
-    overflow: hidden;
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
-.expand-text {
-    cursor: pointer;
-    font-size: 15px;
-}
-

@@ -111,7 +111,6 @@
 {% endblock %}
 {% block script %}
     <script src="https://unpkg.com/htmx.org@1.9.4"></script>
-    <script src="{{ url_for('static', filename='js/expand_text.js') }}"></script>
     {{ ckeditor.load(pkg_type='basic') }}
     {{ ckeditor.config(name='answer') }}
 {% endblock %}
